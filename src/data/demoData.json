@@ -1,0 +1,243 @@
+{
+  "schoolInfo": {
+    "name": "আদর্শ উচ্চ বিদ্যালয়",
+    "logo": "https://placehold.co/150x150/2563eb/ffffff?text=School+Logo",
+    "contact": {
+      "email": "info@adarshaschool.edu.bd",
+      "phone": "+880 1234 567890",
+      "address": "ঢাকা, বাংলাদেশ"
+    },
+    "copyright": "© ২০২৬ আদর্শ উচ্চ বিদ্যালয় | সর্বস্বত্ব সংরক্ষিত"
+  },
+  "uiLabels": {
+    "noticesTitle": "সর্বশেষ নোটিশ সমূহ",
+    "noticesSubtitle": "বিদ্যালয়ের গুরুত্বপূর্ণ নোটিশ ও ঘোষণা",
+    "teachersTitle": "আমাদের সম্মানিত শিক্ষকবৃন্দ",
+    "messagesTitle": "বিদ্যালয় বাণী",
+    "blogsTitle": "ব্লগ ও আর্টিকেল সমূহ",
+    "blogsSubtitle": "বিদ্যালয়ের শিক্ষক ও শিক্ষার্থীদের লেখা প্রবন্ধ সংকলন",
+    "applyButton": "ভর্তি তথ্য জানুন",
+    "readMoreButton": "বিস্তারিত পড়ুন"
+  },
+  "navbarLinks": [
+    { "id": 1, "name": "হোম", "url": "/", "parentId": null, "active": true },
+    { "id": 2, "name": "আমাদের সম্পর্কে", "url": "/about", "parentId": null, "active": true },
+    { "id": 3, "name": "বাণী", "url": "/messages", "parentId": null, "active": true },
+    { "id": 4, "name": "নোটিশ", "url": "/notices", "parentId": null, "active": true },
+    { "id": 5, "name": "ব্লগ", "url": "/blog", "parentId": null, "active": true },
+    { "id": 6, "name": "শিক্ষকবৃন্দ", "url": "/teachers", "parentId": null, "active": true },
+    { "id": 7, "name": "কর্মচারীবৃন্দ", "url": "/staff", "parentId": null, "active": true },
+    { "id": 8, "name": "পরিচালনা পর্ষদ", "url": "/committee", "parentId": null, "active": true },
+    { "id": 9, "name": "যোগাযোগ", "url": "/contact", "parentId": null, "active": true }
+  ],
+  "heroBanner": {
+    "image": "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1920&auto=format&fit=crop",
+    "title": "আদর্শ উচ্চ বিদ্যালয়ে স্বাগতম",
+    "subtitle": "শিক্ষাই জাতির মেরুদণ্ড - আমরা গড়ি আগামীর ভবিষ্যৎ",
+    "showText": true,
+    "showButton": true,
+    "opacity": 60,
+    "bgPosition": "center",
+    "textAlign": "center"
+  },
+  "admission": {
+    "externalLink": "https://example.com/apply-now",
+    "showNavbarButton": true,
+    "instructions": "১. অনলাইন আবেদন লিংকে ক্লিক করে সরাসরি ভর্তি ফর্মে চলে যান।\n২. প্রয়োজনীয় তথ্য প্রদান করুন।\n৩. ফি প্রদান করে প্রবেশপত্র সংগ্রহ করুন।"
+  },
+  "stats": {
+    "students": "১২৫০+",
+    "teachers": "৪৫+",
+    "passRate": "৯৮.৫%",
+    "established": "১৯৭৫"
+  },
+  "teachers": [
+    {
+      "id": 1,
+      "name": "আব্দুর রহমান",
+      "designation": "প্রধান শিক্ষক",
+      "image": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 2,
+      "name": "তাসলিমা আক্তার",
+      "designation": "সহকারী প্রধান শিক্ষক",
+      "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 3,
+      "name": "শফিকুল ইসলাম",
+      "designation": "সিনিয়র শিক্ষক (গণিত)",
+      "image": "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 4,
+      "name": "ফারজানা হক",
+      "designation": "সহকারী শিক্ষক (ইংরেজি)",
+      "image": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?q=80&w=400&auto=format&fit=crop"
+    }
+  ],
+  "staff": [
+    {
+      "id": 1,
+      "name": "কামরুল হাসান",
+      "designation": "প্রধান অফিস সহকারী",
+      "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 2,
+      "name": "জামাল উদ্দিন",
+      "designation": "লাইব্রেরিয়ান",
+      "image": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop"
+    }
+  ],
+  "committee": [
+    {
+      "id": 1,
+      "name": "মোহাম্মদ আলী",
+      "designation": "সভাপতি, ম্যানেজিং কমিটি",
+      "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 2,
+      "name": "সিরাজুল ইসলাম",
+      "designation": "শিক্ষানুরাগী সদস্য",
+      "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400&auto=format&fit=crop"
+    }
+  ],
+  "customPages": [
+    {
+      "id": 1,
+      "title": "একাডেমিক সিলেবাস",
+      "content": "আমাদের স্কুলের বার্ষিক একাডেমিক সিলেবাস এখানে দেওয়া হলো..."
+    }
+  ],
+  "notices": [
+    {
+      "id": 1,
+      "date": "১২ সেপ্টেম্বর, ২০২৬",
+      "title": "বার্ষিক পরীক্ষার সময়সূচি ঘোষণা",
+      "description": "সকল শিক্ষার্থী ও অভিভাবকদের জানানো যাচ্ছে যে, আগামী ২০ নভেম্বর থেকে বার্ষিক পরীক্ষা শুরু হবে। বিস্তারিত রুটিন ডাউনলোড করুন।",
+      "imageUrl": "https://placehold.co/600x800/f3f4f6/1f2937?text=Exam+Routine",
+      "attachmentUrl": "#"
+    },
+    {
+      "id": 2,
+      "date": "০৫ সেপ্টেম্বর, ২০২৬",
+      "title": "আন্তঃস্কুল ফুটবল টুর্নামেন্ট",
+      "description": "আগামী মাসে আমাদের বিদ্যালয়ে আন্তঃস্কুল ফুটবল টুর্নামেন্ট অনুষ্ঠিত হবে। আগ্রহী শিক্ষার্থীদের নাম জমা দেওয়ার জন্য বলা হলো।",
+      "imageUrl": null,
+      "attachmentUrl": null
+    },
+    {
+      "id": 3,
+      "date": "০১ সেপ্টেম্বর, ২০২৬",
+      "title": "অভিভাবক সমাবেশ",
+      "description": "আগামী শনিবার সকাল ১০টায় স্কুল অডিটোরিয়ামে অভিভাবক সমাবেশ অনুষ্ঠিত হবে। সকলের উপস্থিতি একান্ত কাম্য।",
+      "imageUrl": null,
+      "attachmentUrl": null
+    }
+  ],
+  "messages": [
+    {
+      "id": 1,
+      "name": "মোহাম্মদ আলী",
+      "designation": "সভাপতি, ম্যানেজিং কমিটি",
+      "text": "আদর্শ উচ্চ বিদ্যালয়ের সকল শিক্ষক, শিক্ষার্থী ও অভিভাবককে জানাই আন্তরিক শুভেচ্ছা। আমরা একটি আধুনিক ও যুগোপযোগী শিক্ষাব্যবস্থা নিশ্চিত করতে বদ্ধপরিকর।",
+      "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 2,
+      "name": "আব্দুর রহমান",
+      "designation": "প্রধান শিক্ষক",
+      "text": "শিক্ষাই আলোর পথ। আমাদের মূল লক্ষ্য হলো শিক্ষার্থীদের সুশিক্ষায় শিক্ষিত করে একজন আদর্শ মানুষ হিসেবে গড়ে তোলা, যাতে তারা দেশ ও জাতির কল্যাণে কাজ করতে পারে।",
+      "image": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=400&auto=format&fit=crop"
+    }
+  ],
+  "news": [
+    {
+      "id": 1,
+      "title": "আগামীকাল পবিত্র ঈদ-ই-মিলাদুন্নবী উপলক্ষে বিদ্যালয় বন্ধ থাকবে।",
+      "description": "আগামীকাল পবিত্র ঈদ-ই-মিলাদুন্নবী উপলক্ষে বিদ্যালয় বন্ধ থাকবে।"
+    },
+    {
+      "id": 2,
+      "title": "২০২৬ সালের এস.এস.সি পরীক্ষার্থীদের বিদায় সংবর্ধনা আগামী সোমবার।",
+      "description": "২০২৬ সালের এস.এস.সি পরীক্ষার্থীদের বিদায় সংবর্ধনা আগামী সোমবার।"
+    },
+    {
+      "id": 3,
+      "title": "৬ষ্ঠ শ্রেণির ভর্তি ফরম বিতরণ শুরু হয়েছে।",
+      "description": "৬ষ্ঠ শ্রেণির ভর্তি ফরম বিতরণ শুরু হয়েছে।"
+    }
+  ],
+  "gallery": [
+    "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
+  ],
+  "blogs": [
+    {
+      "id": 1,
+      "date": "১০ সেপ্টেম্বর, ২০২৬",
+      "title": "শিক্ষায় প্রযুক্তির ব্যবহার",
+      "content": "বর্তমান যুগে শিক্ষাক্ষেত্রে প্রযুক্তির ব্যবহার অপরিহার্য। ডিজিটাল ক্লাসরুম ও মাল্টিমিডিয়ার মাধ্যমে শিক্ষার্থীদের সহজে ও কার্যকরভাবে শেখানো সম্ভব হচ্ছে।",
+      "image": "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=600&auto=format&fit=crop"
+    },
+    {
+      "id": 2,
+      "date": "০২ সেপ্টেম্বর, ২০২৬",
+      "title": "শৃঙ্খলাই সাফল্যের চাবিকাঠি",
+      "content": "ছাত্রজীবনে শৃঙ্খলার গুরুত্ব অপরিসীম। সময়মতো কাজ করা এবং নিয়মানুবর্তিতা মেনে চললে জীবনে যেকোনো লক্ষ্য অর্জন করা সম্ভব।",
+      "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop"
+    },
+    {
+      "id": 3,
+      "date": "২৫ আগস্ট, ২০২৬",
+      "title": "খেলাধুলার প্রয়োজনীয়তা",
+      "content": "মানসিক ও শারীরিক বিকাশে খেলাধুলার কোনো বিকল্প নেই। সুস্থ দেহে সুন্দর মন বসবাস করে, তাই পড়াশোনার পাশাপাশি খেলাধুলাও জরুরি।",
+      "image": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=600&auto=format&fit=crop"
+    }
+  ],
+  "directory": [
+    {
+      "id": "academics",
+      "title": "একাডেমিক তথ্য",
+      "items": [
+        { "id": "syllabus", "name": "সিলেবাস" },
+        { "id": "routine", "name": "ক্লাস রুটিন" },
+        { "id": "results", "name": "পরীক্ষার ফলাফল" }
+      ]
+    },
+    {
+      "id": "admission",
+      "title": "ভর্তি তথ্য",
+      "items": [
+        { "id": "rules", "name": "ভর্তির নিয়মাবলী" },
+        { "id": "fees", "name": "বেতন ও ফি" },
+        { "id": "prospectus", "name": "প্রসপেক্টাস" }
+      ]
+    }
+  ],
+  "importantLinks": [
+    { "id": 1, "title": "শিক্ষা মন্ত্রণালয়", "url": "http://www.moedu.gov.bd/" },
+    { "id": 2, "title": "মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর", "url": "http://www.dshe.gov.bd/" },
+    { "id": 3, "title": "ঢাকা এডুকেশন বোর্ড", "url": "http://www.dhakaeducationboard.gov.bd/" },
+    { "id": 4, "title": "জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড", "url": "http://www.nctb.gov.bd/" }
+  ],
+  "sidebarImage": "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=400&auto=format&fit=crop",
+  "layoutConfig": [
+    { "id": "news_ticker", "name": "স্ক্রলিং জরুরি বার্তা (Marquee)", "active": true },
+    { "id": "banner", "name": "হিরো ব্যানার", "active": true },
+    { "id": "stats_counter", "name": "লাইভ পরিসংখ্যান কাউন্টার", "active": true },
+    { "id": "info_directory", "name": "তথ্য কেন্দ্র (Info Hub)", "active": true },
+    { "id": "notices", "name": "সর্বশেষ নোটিশ", "active": true },
+    { "id": "messages", "name": "বিদ্যালয় বাণী", "active": true },
+    { "id": "gallery_slider", "name": "ফটো গ্যালারি স্লাইডার", "active": true },
+    { "id": "blog_section", "name": "ব্লগ ও অনুচ্ছেদ (Blog)", "active": true },
+    { "id": "teachers", "name": "সম্মানিত শিক্ষকবৃন্দ", "active": true },
+    { "id": "sidebar_links", "name": "সাইডবার: গুরুত্বপূর্ণ লিঙ্ক", "active": true },
+    { "id": "sidebar_helpline", "name": "সাইডবার: জরুরি হটলাইন", "active": true },
+    { "id": "sidebar_image", "name": "সাইডবার: হটলাইন ছবি/ব্যানার", "active": true }
+  ]
+}
