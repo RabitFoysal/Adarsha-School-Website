@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState<"general" | "banner" | "stats" | "admission" | "labels" | "security" | "backup">("general");
+  const [activeTab, setActiveTab] = useState<"general" | "banner" | "stats" | "admission" | "labels" | "theme" | "security" | "backup">("general");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
@@ -53,6 +53,9 @@ export default function SettingsPage() {
   const [newPassword, setNewPassword] = useState("");
   const [passLoading, setPassLoading] = useState(false);
 
+  // থিম কালার স্টেট
+  const [themeColor, setThemeColor] = useState("emerald");
+
   const fetchAllSettings = async () => {
     const res = await fetch("/api/school-info");
     if (res.ok) {
@@ -70,6 +73,9 @@ export default function SettingsPage() {
       setOpacity(data.heroBanner.opacity || 60);
       setBgPosition(data.heroBanner.bgPosition || "center");
       setTextAlign(data.heroBanner.textAlign || "center");
+
+      // থিম কালার লোড
+      setThemeColor(data.themeColor || "emerald");
 
       // পরিসংখ্যান ডাটা লোড (নতুন)
       const stats = data.stats || {};
@@ -238,6 +244,30 @@ export default function SettingsPage() {
     setTimeout(() => setMessage(""), 3000);
   };
 
+  const handleSaveTheme = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage("");
+    try {
+      const res = await fetch("/api/update-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ section: "theme_color", themeColor })
+      });
+      if (res.ok) {
+        setMessage("ওয়েবসাইটের থিম কালার সফলভাবে আপডেট হয়েছে!");
+        setIsError(false);
+        fetchAllSettings();
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("school-info-updated", { detail: { themeColor } }));
+        }
+      }
+    } catch (err) {
+      setMessage("সমস্যা হয়েছে!");
+      setIsError(true);
+    }
+    setTimeout(() => setMessage(""), 3000);
+  };
+
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPassLoading(true);
@@ -301,9 +331,55 @@ export default function SettingsPage() {
           </span>
         </button>
         <button onClick={() => { setActiveTab("labels"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "labels" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>✍️ বাটন ও লেখার ভাষা সেটিংস</button>
+        <button onClick={() => { setActiveTab("theme"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "theme" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🎨 থিম কালার কন্ট্রোল</button>
         <button onClick={() => { setActiveTab("security"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "security" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🔑 নিরাপত্তা (পাসওয়ার্ড)</button>
         <button onClick={() => { setActiveTab("backup"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "backup" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>💾 ব্যাকআপ ও রিস্টোর</button>
       </div>
+
+      {activeTab === "theme" && (
+        <form onSubmit={handleSaveTheme} className="bg-white p-8 rounded-xl border space-y-6 max-w-2xl">
+          <h2 className="text-xl font-bold text-gray-800 border-b pb-3 mb-6">ওয়েবসাইটের থিম কালার কন্ট্রোল</h2>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            এখান থেকে আপনি আপনার পুরো স্কুলের ওয়েবসাইটের মূল থিম কালার (অ্যাকসেন্ট কালার) পরিবর্তন করতে পারবেন। সমস্ত বাটন, হেডার ও হাইলাইট এই কালার অনুযায়ী স্বয়ংক্রিয়ভাবে রূপ নেবে।
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <label className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition ${themeColor === "emerald" ? "border-emerald-600 bg-emerald-50/50" : "border-gray-200 hover:border-gray-300"}`}>
+              <input type="radio" name="themeColor" value="emerald" checked={themeColor === "emerald"} onChange={(e) => setThemeColor(e.target.value)} className="w-4 h-4 text-emerald-600" />
+              <div>
+                <div className="font-bold text-sm text-gray-900 flex items-center gap-2"><span className="w-4 h-4 rounded-full bg-emerald-600 inline-block"></span> এমারেল্ড গ্রিন (Emerald Green)</div>
+                <div className="text-xs text-gray-500">প্রাকৃতিক ও প্রফেশনাল সবুজ থিম</div>
+              </div>
+            </label>
+
+            <label className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition ${themeColor === "blue" ? "border-blue-600 bg-blue-50/50" : "border-gray-200 hover:border-gray-300"}`}>
+              <input type="radio" name="themeColor" value="blue" checked={themeColor === "blue"} onChange={(e) => setThemeColor(e.target.value)} className="w-4 h-4 text-blue-600" />
+              <div>
+                <div className="font-bold text-sm text-gray-900 flex items-center gap-2"><span className="w-4 h-4 rounded-full bg-blue-600 inline-block"></span> রয়্যাল ব্লু (Royal Blue)</div>
+                <div className="text-xs text-gray-500">আধুনিক ও প্রাতিষ্ঠানিক নীল থিম</div>
+              </div>
+            </label>
+
+            <label className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition ${themeColor === "indigo" ? "border-indigo-600 bg-indigo-50/50" : "border-gray-200 hover:border-gray-300"}`}>
+              <input type="radio" name="themeColor" value="indigo" checked={themeColor === "indigo"} onChange={(e) => setThemeColor(e.target.value)} className="w-4 h-4 text-indigo-600" />
+              <div>
+                <div className="font-bold text-sm text-gray-900 flex items-center gap-2"><span className="w-4 h-4 rounded-full bg-indigo-600 inline-block"></span> ক্লাসিক ইন্ডিগো (Classic Indigo)</div>
+                <div className="text-xs text-gray-500">গভীর ও চমৎকার ইন্ডিগো থিম</div>
+              </div>
+            </label>
+
+            <label className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition ${themeColor === "amber" ? "border-amber-600 bg-amber-50/50" : "border-gray-200 hover:border-gray-300"}`}>
+              <input type="radio" name="themeColor" value="amber" checked={themeColor === "amber"} onChange={(e) => setThemeColor(e.target.value)} className="w-4 h-4 text-amber-600" />
+              <div>
+                <div className="font-bold text-sm text-gray-900 flex items-center gap-2"><span className="w-4 h-4 rounded-full bg-amber-500 inline-block"></span> গোল্ডেন অ্যাম্বার (Golden Amber)</div>
+                <div className="text-xs text-gray-500">আকর্ষণীয় ও রাজকীয় সোনালী থিম</div>
+              </div>
+            </label>
+          </div>
+
+          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg transition shadow-md">থিম কালার সেভ করুন</button>
+        </form>
+      )}
 
       {activeTab === "general" && (
         <form onSubmit={handleSaveGeneral} className="bg-white p-8 rounded-xl border space-y-6 max-w-2xl">
