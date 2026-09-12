@@ -1,70 +1,177 @@
+"use client";
+
+import { useState, useMemo } from "react";
 import demoData from "@/data/demoData.json";
+import { 
+  Bell, 
+  Search, 
+  Calendar, 
+  Download, 
+  FileText
+} from "lucide-react";
 
 export default function NoticesPage() {
   const { notices } = demoData;
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  const filteredNotices = useMemo(() => {
+    return (notices || []).filter((notice: any) => {
+      const matchesSearch = 
+        notice.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        notice.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        notice.date?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      if (selectedCategory === "all") return matchesSearch;
+      if (selectedCategory === "exam") return matchesSearch && (notice.title.includes("পরীক্ষা") || notice.description.includes("পরীক্ষা"));
+      if (selectedCategory === "admission") return matchesSearch && (notice.title.includes("ভর্তি") || notice.description.includes("ভর্তি"));
+      if (selectedCategory === "general") return matchesSearch && !notice.title.includes("পরীক্ষা") && !notice.title.includes("ভর্তি");
+      return matchesSearch;
+    });
+  }, [notices, searchTerm, selectedCategory]);
 
   return (
-    <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-screen">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
       
-      {/* পেজের টাইটেল */}
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">নোটিশ বোর্ড</h2>
-        <div className="w-24 h-1 bg-blue-600 mx-auto mt-4 rounded"></div>
-        <p className="text-gray-600 mt-4">বিদ্যালয়ের সকল দাপ্তরিক নোটিশ, স্ক্যান কপি ও ফাইল ডাউনলোড করুন।</p>
+      {/* পেজের প্রিমিয়াম হেডার */}
+      <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold px-3.5 py-1.5 rounded-full mb-3">
+          <Bell className="w-3.5 h-3.5 text-blue-600" />
+          <span>অফিসিয়াল নোটিশ বোর্ড</span>
+        </div>
+        <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+          বিদ্যালয়ের বিজ্ঞপ্তি ও নোটিশ
+        </h1>
+        <p className="text-slate-500 text-sm mt-2">
+          বিদ্যালয়ের সকল সাম্প্রতিক দাপ্তরিক নোটিশ, পরীক্ষার সময়সূচি ও রেজাল্ট সংক্রান্ত তথ্য
+        </p>
+      </div>
+
+      {/* সার্চ ও ক্যাটাগরি ফিল্টার বার */}
+      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* সার্চ বক্স */}
+        <div className="relative w-full sm:w-72">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="নোটিশ অনুসন্ধান করুন..."
+            className="w-full pl-10 pr-4 py-2 text-xs md:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition"
+          />
+        </div>
+
+        {/* ক্যাটাগরি ফিল্টার */}
+        <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+          <button
+            type="button"
+            onClick={() => setSelectedCategory("all")}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer ${
+              selectedCategory === "all"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            }`}
+          >
+            সকল ({notices?.length || 0})
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedCategory("exam")}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer ${
+              selectedCategory === "exam"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            }`}
+          >
+            পরীক্ষা
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedCategory("admission")}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer ${
+              selectedCategory === "admission"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            }`}
+          >
+            ভর্তি
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedCategory("general")}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer ${
+              selectedCategory === "general"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            }`}
+          >
+            সাধারণ
+          </button>
+        </div>
       </div>
 
       {/* নোটিশ সমূহের তালিকা */}
-      <div className="space-y-8">
-        {notices.map((notice: any) => (
+      <div className="space-y-6">
+        {filteredNotices.map((notice: any) => (
           <div 
             key={notice.id} 
-            className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition flex flex-col gap-6"
+            className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition duration-300 flex flex-col gap-6"
           >
-            <div>
-              <span className="bg-blue-100 text-blue-700 font-bold px-3 py-1 rounded-full text-xs">
-                📅 প্রকাশকাল: {notice.date}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+              <span className="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-100 text-blue-700 font-bold px-3 py-1 rounded-full text-xs self-start">
+                <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                <span>প্রকাশকাল: {notice.date}</span>
               </span>
-              <h3 className="text-2xl font-bold text-gray-900 mt-4 mb-2 leading-snug">
+              <span className="text-xs text-slate-400 font-medium">স্মারক নং: {notice.id}/২০২৬</span>
+            </div>
+
+            <div>
+              <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-snug">
                 {notice.title}
-              </h3>
-              <p className="text-gray-600 text-base leading-relaxed whitespace-pre-line">
+              </h2>
+              <p className="text-slate-600 text-sm md:text-base leading-relaxed whitespace-pre-line">
                 {notice.description}
               </p>
             </div>
 
-            {/* ১. নোটিশ ছবি প্রদর্শন করা */}
+            {/* নোটিশ স্ক্যান ইমেজ যদি থাকে */}
             {notice.imageUrl && (
-              <div className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50 p-2 max-w-lg shadow-inner">
-                <p className="text-xs text-gray-500 mb-2 font-semibold">🖼️ নোটিশের স্ক্যান কপি:</p>
+              <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50 p-3 max-w-xl">
+                <p className="text-xs text-slate-500 mb-2 font-semibold flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>সংযুক্ত নোটিশ কপি:</span>
+                </p>
                 <img 
                   src={notice.imageUrl} 
                   alt={notice.title} 
-                  className="w-full object-contain max-h-[600px] rounded" 
+                  className="w-full object-contain max-h-[500px] rounded-lg border border-slate-200" 
                 />
               </div>
             )}
 
-            {/* ২. নোটিশ ফাইল বা পিডিএফ ডাউনলোড করার বাটন */}
+            {/* ডাউনলোড অ্যাকশন */}
             {notice.attachmentUrl && (
-              <div className="border-t pt-4">
+              <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
                 <a 
                   href={notice.attachmentUrl} 
                   download
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg transition shadow-md text-sm cursor-pointer"
+                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-xl transition shadow-xs text-xs md:text-sm cursor-pointer"
                 >
-                  📥 ফাইলটি ডাউনলোড করুন (PDF/Word)
+                  <Download className="w-4 h-4" />
+                  <span>ফাইল ডাউনলোড করুন (PDF/Word)</span>
                 </a>
               </div>
             )}
-            
           </div>
         ))}
 
-        {notices.length === 0 && (
-          <div className="text-center py-12 text-gray-500 bg-white rounded-xl border border-gray-100">
-            কোনো নোটিশ পাওয়া যায়নি।
+        {filteredNotices.length === 0 && (
+          <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 text-slate-500">
+            <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <p className="font-bold text-base text-slate-700">কোনো নোটিশ পাওয়া যায়নি</p>
+            <p className="text-xs text-slate-400 mt-1">ভিন্ন শব্দ দিয়ে অনুসন্ধান করুন অথবা ফিল্টার রিসেট করুন।</p>
           </div>
         )}
       </div>

@@ -32,8 +32,12 @@ export default function SettingsPage() {
   const [statsEstablished, setStatsEstablished] = useState("");
 
   // ভর্তি সেটিংস স্টেট
+  const [isAdmissionOpen, setIsAdmissionOpen] = useState(true);
   const [externalLink, setExternalLink] = useState("");
   const [showNavbarButton, setShowNavbarButton] = useState(true);
+  const [admissionButtonText, setAdmissionButtonText] = useState("ভর্তি চলছে ২০২৬");
+  const [applyButtonText, setApplyButtonText] = useState("অনলাইনে আবেদন করুন");
+  const [closedNotice, setClosedNotice] = useState("");
   const [instructions, setInstructions] = useState("");
 
   // ভাষা ও টেক্সট সেটিংস স্টেট (UI Labels)
@@ -83,13 +87,15 @@ export default function SettingsPage() {
       setBlogsTitle(labels.blogsTitle || "ব্লগ ও আর্টিকেল সমূহ");
       setApplyButton(labels.applyButton || "ভর্তি তথ্য জানুন");
 
-      fetch("/api/school-info")
-        .then(r => r.json())
-        .then(dData => {
-          setExternalLink(dData.admission?.externalLink || "");
-          setShowNavbarButton(dData.admission?.showNavbarButton !== false);
-          setInstructions(dData.admission?.instructions || "");
-        });
+      // ভর্তি সেটিংস ডাটা লোড
+      const adm = data.admission || {};
+      setIsAdmissionOpen(adm.isOpen !== false);
+      setShowNavbarButton(adm.showNavbarButton !== false);
+      setAdmissionButtonText(adm.buttonText || "ভর্তি চলছে ২০২৬");
+      setApplyButtonText(adm.applyButtonText || "অনলাইনে আবেদন করুন");
+      setExternalLink(adm.externalLink || "");
+      setClosedNotice(adm.closedNotice || "বর্তমানে নতুন শিক্ষাবর্ষের ভর্তি কার্যক্রম স্থগিত রয়েছে। পরবর্তী বিজ্ঞপ্তির জন্য নোটিশ বোর্ডে নজর রাখুন।");
+      setInstructions(adm.instructions || "");
     }
   };
 
@@ -121,9 +127,20 @@ export default function SettingsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ section: "school_info", name: schoolName, logo: schoolLogo, address: schoolAddress, copyright: schoolCopyright })
       });
-      if (res.ok) { setMessage("স্কুলের তথ্য সফলভাবে সংরক্ষিত হয়েছে!"); setIsError(false); fetchAllSettings(); }
+      if (res.ok) { 
+        setMessage("স্কুলের তথ্য ও লোগো সফলভাবে সংরক্ষিত হয়েছে! সমস্ত পেজ ও ব্রাউজার ট্যাবে লোগো আপডেট হয়েছে।"); 
+        setIsError(false); 
+        fetchAllSettings(); 
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(
+            new CustomEvent("school-info-updated", {
+              detail: { logo: schoolLogo, name: schoolName }
+            })
+          );
+        }
+      }
     } catch (err) { setMessage("সমস্যা!"); setIsError(true); }
-    setTimeout(() => setMessage(""), 3000);
+    setTimeout(() => setMessage(""), 4000);
   };
 
   const handleSaveBanner = async (e: React.FormEvent) => {
@@ -172,14 +189,36 @@ export default function SettingsPage() {
     e.preventDefault();
     setMessage("");
     try {
+      const payload = {
+        section: "admission",
+        isOpen: isAdmissionOpen,
+        showNavbarButton,
+        buttonText: admissionButtonText,
+        applyButtonText,
+        externalLink,
+        closedNotice,
+        instructions
+      };
       const res = await fetch("/api/update-settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ section: "admission", externalLink, showNavbarButton, instructions })
+        body: JSON.stringify(payload)
       });
-      if (res.ok) { setMessage("ভর্তি তথ্য সফলভাবে সংরক্ষিত হয়েছে!"); setIsError(false); fetchAllSettings(); }
+      if (res.ok) {
+        setMessage("ভর্তি তথ্য ও সফটওয়্যার লিঙ্ক সফলভাবে সংরক্ষিত হয়েছে!");
+        setIsError(false);
+        fetchAllSettings();
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("school-info-updated", {
+            detail: { admission: payload }
+          }));
+        }
+      } else {
+        setMessage("সংরক্ষণ করতে সমস্যা হয়েছে!");
+        setIsError(true);
+      }
     } catch (err) { setMessage("সমস্যা!"); setIsError(true); }
-    setTimeout(() => setMessage(""), 3000);
+    setTimeout(() => setMessage(""), 3500);
   };
 
   const handleSaveLabels = async (e: React.FormEvent) => {
@@ -248,7 +287,19 @@ export default function SettingsPage() {
         <button onClick={() => { setActiveTab("general"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "general" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🏫 স্কুলের তথ্য ও ফুটার</button>
         <button onClick={() => { setActiveTab("banner"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "banner" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🌄 ব্যানার কন্ট্রোল</button>
         <button onClick={() => { setActiveTab("stats"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "stats" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>📊 পরিসংখ্যান সেটিংস</button>
-        <button onClick={() => { setActiveTab("admission"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "admission" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🎓 ভর্তি সেটিংস</button>
+        <button 
+          onClick={() => { setActiveTab("admission"); setMessage(""); }} 
+          className={`pb-4 px-4 font-bold text-sm transition flex items-center gap-2 ${
+            activeTab === "admission" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"
+          }`}
+        >
+          <span>🎓 ভর্তি ও আবেদন বাটন কন্ট্রোল</span>
+          <span className={`text-[10px] px-2 py-0.5 rounded-full font-black ${
+            isAdmissionOpen ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"
+          }`}>
+            {isAdmissionOpen ? "চালু" : "বন্ধ"}
+          </span>
+        </button>
         <button onClick={() => { setActiveTab("labels"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "labels" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>✍️ বাটন ও লেখার ভাষা সেটিংস</button>
         <button onClick={() => { setActiveTab("security"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "security" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🔑 নিরাপত্তা (পাসওয়ার্ড)</button>
         <button onClick={() => { setActiveTab("backup"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "backup" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>💾 ব্যাকআপ ও রিস্টোর</button>
@@ -262,12 +313,44 @@ export default function SettingsPage() {
             <div><label className="block text-sm font-medium text-gray-700 mb-1">ফুটার ঠিকানা</label><input type="text" required value={schoolAddress} onChange={(e) => setSchoolAddress(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900" /></div>
           </div>
           <div><label className="block text-sm font-medium text-gray-700 mb-1">ফুটার কপিরাইট লেখা</label><input type="text" required value={schoolCopyright} onChange={(e) => setSchoolCopyright(e.target.value)} className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900" /></div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">প্রতিষ্ঠানের লোগো আপলোড</label>
-            <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, "logo")} disabled={uploadingLogo} className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 cursor-pointer" />
-            <p className="text-xs text-blue-600 mt-2 font-medium bg-blue-50 p-2 rounded border border-blue-100">ℹ️ <b>পরামর্শ:</b> প্রতিষ্ঠানের লোগোর জন্য ১:১ বর্গাকার (Square) ছবি ব্যবহার করুন। আদর্শ সাইজ: <b>১৫০x১৫০ পিক্সেল</b>।</p>
-            {uploadingLogo && <p className="text-xs text-blue-600 mt-1">লোগো আপলোড হচ্ছে...</p>}
-            {schoolLogo && <div className="mt-4 border p-2 rounded bg-gray-50 w-24 h-24 mx-auto flex items-center justify-center"><img src={schoolLogo} alt="Logo" className="max-w-full max-h-full rounded-full object-cover" /></div>}
+          <div className="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <label className="block text-sm font-bold text-slate-800">প্রতিষ্ঠানের অফিসিয়াল লোগো (Logo & Favicon)</label>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              এখানে লোগো আপলোড করলে তা স্বয়ংক্রিয়ভাবে ওয়েবসাইটের <b>হেডার নেভবার, ফুটার এবং ব্রাউজার ট্যাবের ফেভআইকন (Favicon)</b> সহ সর্বত্র আপডেট হবে।
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-3 items-center">
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={(e) => handleImageUpload(e, "logo")} 
+                disabled={uploadingLogo} 
+                className="w-full sm:w-auto flex-1 px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 text-xs cursor-pointer file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
+              />
+              <span className="text-xs text-slate-400 font-semibold">অথবা লিঙ্ক:</span>
+              <input
+                type="url"
+                placeholder="https://example.com/logo.png"
+                value={schoolLogo}
+                onChange={(e) => setSchoolLogo(e.target.value)}
+                className="w-full sm:w-64 px-3 py-2 text-xs rounded-lg border border-gray-300 bg-white text-gray-900"
+              />
+            </div>
+
+            {uploadingLogo && <p className="text-xs text-blue-600 font-medium animate-pulse">লোগো আপলোড হচ্ছে...</p>}
+            
+            {schoolLogo && (
+              <div className="mt-3 flex items-center gap-4 p-3 bg-white rounded-lg border border-slate-200">
+                <div className="w-16 h-16 rounded-xl border border-slate-200 p-1 flex items-center justify-center bg-slate-50 shrink-0">
+                  <img src={schoolLogo} alt="Logo Preview" className="max-w-full max-h-full rounded-lg object-cover" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-800">বর্তমান লোগো প্রিভিউ</div>
+                  <div className="text-[11px] text-slate-500 truncate max-w-xs">{schoolLogo}</div>
+                  <div className="text-[11px] text-emerald-600 font-semibold mt-1">✓ নেভবার ও ব্রাউজার ট্যাবে লাইভ সিঙ্ক হবে</div>
+                </div>
+              </div>
+            )}
           </div>
           <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg">তথ্য সেভ করুন</button>
         </form>
@@ -326,12 +409,144 @@ export default function SettingsPage() {
       )}
 
       {activeTab === "admission" && (
-        <form onSubmit={handleSaveAdmission} className="bg-white p-8 rounded-xl border space-y-6 max-w-2xl">
-          <h2 className="text-xl font-bold text-gray-800 border-b pb-3 mb-6">অনлайн ভর্তি ও সফটওয়্যার লিঙ্ক কানেকশন</h2>
-          <div><label className="block text-sm font-medium text-gray-700 mb-1 font-bold text-red-600">ভর্তি আবেদন লিঙ্ক</label><input type="url" required value={externalLink} onChange={(e) => setExternalLink(e.target.value)} className="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 outline-none" /></div>
-          <div className="bg-gray-50 p-4 rounded-lg border"><label className="flex items-center gap-2 cursor-pointer font-semibold text-gray-700 text-sm"><input type="checkbox" checked={showNavbarButton} onChange={(e) => setShowNavbarButton(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" />নেভ বারের (Navbar) ডান কোনায় "ভর্তি তথ্য" বাটনটি দেখান</label></div>
-          <div><label className="block text-sm font-medium text-gray-700 mb-1">ভর্তি নির্দেশনাবলী ও নিয়মসমূহ</label><textarea rows={6} required value={instructions} onChange={(e) => setInstructions(e.target.value)} className="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 outline-none" /></div>
-          <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded-lg w-full">ভর্তি তথ্য ও লিংক সেভ করুন</button>
+        <form onSubmit={handleSaveAdmission} className="bg-white p-6 sm:p-8 rounded-2xl border border-gray-200 space-y-6 max-w-3xl shadow-xs">
+          <div className="border-b pb-4">
+            <h2 className="text-xl font-black text-gray-900 flex items-center gap-2.5">
+              <span>🎓</span>
+              <span>ভর্তি ও অনলাইন আবেদন বাটন কন্ট্রোল সেন্টার</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">
+              এক জায়গা থেকেই ওয়েবসাইটের সমস্ত ভর্তি বাটন চালু/বন্ধ করুন এবং আপনার নিজস্ব স্কুল সফটওয়্যার বা ফর্মের লিঙ্ক যুক্ত করুন।
+            </p>
+          </div>
+
+          {/* ১. মাস্টার ভর্তি অন/অফ সুইচ */}
+          <div className={`p-5 rounded-2xl border transition-all ${
+            isAdmissionOpen 
+              ? "bg-emerald-50/70 border-emerald-300" 
+              : "bg-rose-50/70 border-rose-300"
+          }`}>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className={`w-3 h-3 rounded-full ${isAdmissionOpen ? "bg-emerald-500 animate-pulse" : "bg-rose-500"}`}></span>
+                  <h3 className="font-black text-base text-gray-900">
+                    {isAdmissionOpen ? "ভর্তি কার্যক্রম চালু (ACTIVE)" : "ভর্তি কার্যক্রম বন্ধ (INACTIVE)"}
+                  </h3>
+                </div>
+                <p className="text-xs text-gray-600 mt-1 max-w-md leading-relaxed">
+                  {isAdmissionOpen 
+                    ? "বর্তমানে ওয়েবসাইটের নেভবার, হিরো ব্যানার এবং সকল জায়গায় ভর্তি আবেদন বাটন প্রদর্শিত হচ্ছে।" 
+                    : "ভর্তি প্রক্রিয়া শেষ হওয়ায় ওয়েবসাইটের সমস্ত ভর্তি বাটন সাময়িকভাবে বন্ধ/হাইড রয়েছে।"}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsAdmissionOpen(!isAdmissionOpen)}
+                className={`px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm transition shadow-sm cursor-pointer shrink-0 ${
+                  isAdmissionOpen
+                    ? "bg-rose-600 hover:bg-rose-700 text-white"
+                    : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                }`}
+              >
+                {isAdmissionOpen ? "🛑 ভর্তি বন্ধ করুন (সব বাটন অফ)" : "✅ ভর্তি চালু করুন (সব বাটন অন)"}
+              </button>
+            </div>
+          </div>
+
+          {/* ২. আপনার সফটওয়্যার বা অনলাইন ফর্মের লিঙ্ক */}
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-gray-900">
+              🔗 আপনার নিজস্ব সফটওয়্যার / গুগল ফর্মের ভর্তি আবেদন লিঙ্ক (External URL)
+            </label>
+            <input 
+              type="url" 
+              value={externalLink} 
+              onChange={(e) => setExternalLink(e.target.value)} 
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none text-sm font-medium" 
+              placeholder="যেমন: https://my-school-software.com/admission-apply বা গুগল ফর্ম লিঙ্ক" 
+            />
+            <p className="text-[12px] text-gray-500 leading-normal">
+              💡 শিক্ষার্থী বা অভিভাবকরা ওয়েবসাইটে "অনলাইনে আবেদন করুন" বাটনে ক্লিক করলে সরাসরি আপনার সফটওয়্যারের এই লিঙ্কে চলে যাবে এবং ফর্ম পূরণ করতে পারবে।
+            </p>
+          </div>
+
+          {/* ৩. বাটন টেক্সট ও নেভবার অপশন */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                নেভবার টপবার বাটন লেখা
+              </label>
+              <input 
+                type="text" 
+                value={admissionButtonText} 
+                onChange={(e) => setAdmissionButtonText(e.target.value)} 
+                className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500" 
+                placeholder="যেমন: ভর্তি চলছে ২০২৬"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                আবেদন বাটন টেক্সট
+              </label>
+              <input 
+                type="text" 
+                value={applyButtonText} 
+                onChange={(e) => setApplyButtonText(e.target.value)} 
+                className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500" 
+                placeholder="যেমন: অনলাইনে আবেদন করুন"
+              />
+            </div>
+          </div>
+
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <label className="flex items-center gap-2.5 cursor-pointer font-bold text-gray-800 text-sm">
+              <input 
+                type="checkbox" 
+                checked={showNavbarButton} 
+                onChange={(e) => setShowNavbarButton(e.target.checked)} 
+                className="w-4 h-4 text-blue-600 rounded cursor-pointer" 
+              />
+              <span>নেভবারের (Navbar) টপবারে "{admissionButtonText}" বাটনটি প্রদর্শন করুন</span>
+            </label>
+          </div>
+
+          {/* ৪. ভর্তি বন্ধ থাকাকালীন নোটিশ */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-gray-700">
+              ভর্তি বন্ধ থাকাকালীন নোটিশ (Closed Notice)
+            </label>
+            <input 
+              type="text" 
+              value={closedNotice} 
+              onChange={(e) => setClosedNotice(e.target.value)} 
+              className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="যেমন: বর্তমানে নতুন শিক্ষাবর্ষের ভর্তি কার্যক্রম স্থগিত রয়েছে। পরবর্তী বিজ্ঞপ্তির জন্য নোটিশ বোর্ডে নজর রাখুন।"
+            />
+            <p className="text-[11px] text-gray-400">ভর্তি বন্ধ থাকলে আবেদন পাতায় এই নোটিশটি সতর্কবার্তা হিসেবে প্রদর্শিত হবে।</p>
+          </div>
+
+          {/* ৫. ভর্তি নির্দেশনাবলী ও নিয়মসমূহ */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-gray-700">
+              ভর্তি নির্দেশনাবলী ও নিয়মসমূহ (Instructions)
+            </label>
+            <textarea 
+              rows={5} 
+              value={instructions} 
+              onChange={(e) => setInstructions(e.target.value)} 
+              className="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500" 
+              placeholder="ভর্তির নিয়মাবলী, ফি ও যোগাযোগের সময়সূচি লিখুন..."
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 px-6 rounded-xl w-full transition shadow-md hover:shadow-lg cursor-pointer text-sm sm:text-base flex items-center justify-center gap-2"
+          >
+            <span>ভর্তি সেটিংস ও সফটওয়্যার লিঙ্ক সংরক্ষণ করুন</span>
+          </button>
         </form>
       )}
 

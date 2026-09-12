@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LogoutButton from "@/components/LogoutButton";
+import demoData from "@/data/demoData.json";
 
 export default function AdminLayout({
   children,
@@ -10,6 +12,26 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [logoUrl, setLogoUrl] = useState(demoData.schoolInfo.logo);
+  const [schoolName, setSchoolName] = useState(demoData.schoolInfo.name);
+
+  useEffect(() => {
+    fetch("/api/school-info", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.schoolInfo?.logo) setLogoUrl(data.schoolInfo.logo);
+        if (data.schoolInfo?.name) setSchoolName(data.schoolInfo.name);
+      })
+      .catch(() => {});
+
+    const handleSync = (e: any) => {
+      if (e.detail?.logo) setLogoUrl(e.detail.logo);
+      if (e.detail?.name) setSchoolName(e.detail.name);
+    };
+
+    window.addEventListener("school-info-updated", handleSync);
+    return () => window.removeEventListener("school-info-updated", handleSync);
+  }, []);
 
   const menuItems = [
     { href: "/admin", name: "📊 ড্যাশবোর্ড" },
@@ -31,8 +53,16 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen bg-gray-100">
       <aside className="w-64 bg-gray-900 text-white flex flex-col shadow-xl z-10">
-        <div className="p-6 text-center border-b border-gray-800">
-          <h2 className="text-2xl font-bold text-blue-400">Admin Panel</h2>
+        <div className="p-5 border-b border-gray-800 flex items-center gap-3">
+          <img 
+            src={logoUrl} 
+            alt="School Logo" 
+            className="w-10 h-10 rounded-xl object-cover ring-1 ring-blue-500 bg-white shrink-0" 
+          />
+          <div className="overflow-hidden">
+            <h2 className="text-sm font-bold text-white truncate">{schoolName}</h2>
+            <p className="text-[11px] text-blue-400 font-medium">অ্যাডমিন প্যানেল</p>
+          </div>
         </div>
         <nav className="flex-1 p-4 space-y-1.5 mt-4 overflow-y-auto max-h-[calc(100vh-160px)]">
           {menuItems.map((item) => {

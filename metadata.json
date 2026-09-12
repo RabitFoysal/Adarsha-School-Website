@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "School CMS",
+  "description": "School Management System and Dynamic Website",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

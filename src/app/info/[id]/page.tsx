@@ -25,7 +25,7 @@ export default async function InfoDetailPage({ params }: { params: Promise<{ id:
   }
 
   if (!foundItem) {
-    notFound();
+    return <div>Not Found</div>;
   }
 
   return (

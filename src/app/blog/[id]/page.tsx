@@ -10,7 +10,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<{ id
   const blog = blogs.find((b: any) => b.id === Number(id));
 
   if (!blog) {
-    notFound();
+    return <div>Not Found</div>;
   }
 
   return (
