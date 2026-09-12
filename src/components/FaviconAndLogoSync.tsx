@@ -44,29 +44,47 @@ export default function FaviconAndLogoSync() {
         const data = await res.json();
         if (data.schoolInfo?.logo) {
           updateFaviconInDocument(data.schoolInfo.logo);
-          // অন্য সব কম্পোনেন্টে লাইভ সিঙ্ক করানোর জন্য ইভেন্ট পাঠানো
-          window.dispatchEvent(
-            new CustomEvent("school-info-updated", {
-              detail: {
-                logo: data.schoolInfo.logo,
-                name: data.schoolInfo.name,
-              },
-            })
-          );
         }
+        if (data.customColors) {
+          applyCustomColors(data.customColors);
+        }
+        // অন্য সব কম্পোনেন্টে লাইভ সিঙ্ক করানোর জন্য ইভেন্ট পাঠানো
+        window.dispatchEvent(
+          new CustomEvent("school-info-updated", {
+            detail: {
+              logo: data.schoolInfo?.logo,
+              name: data.schoolInfo?.name,
+              customColors: data.customColors
+            },
+          })
+        );
       }
     } catch {
       // সাইলেন্ট ফেইলওভার
     }
   }, [updateFaviconInDocument]);
 
+  const applyCustomColors = (colors: any) => {
+    if (!colors || typeof document === "undefined") return;
+    const root = document.documentElement;
+    if (colors.primary) root.style.setProperty("--custom-primary", colors.primary);
+    if (colors.secondary) root.style.setProperty("--custom-secondary", colors.secondary);
+    if (colors.navbarBg) root.style.setProperty("--custom-navbar-bg", colors.navbarBg);
+    if (colors.footerBg) root.style.setProperty("--custom-footer-bg", colors.footerBg);
+    if (colors.buttonGradient1) root.style.setProperty("--custom-grad-1", colors.buttonGradient1);
+    if (colors.buttonGradient2) root.style.setProperty("--custom-grad-2", colors.buttonGradient2);
+  };
+
   useEffect(() => {
     syncLogo();
 
-    // কাস্টম ইভেন্ট লিসেনার (অ্যাডমিন প্যানেল থেকে লোগো আপডেট হলে)
+    // কাস্টম ইভেন্ট লিসেনার (অ্যাডমিন প্যানেল থেকে আপডেট হলে)
     const handleInfoUpdated = (e: any) => {
       if (e.detail?.logo) {
         updateFaviconInDocument(e.detail.logo);
+      }
+      if (e.detail?.customColors) {
+        applyCustomColors(e.detail.customColors);
       }
     };
 

@@ -83,6 +83,10 @@ export async function POST(request: Request) {
     else if (section === "theme_color") {
       data.themeColor = body.themeColor || "emerald";
     }
+    // ৬. অ্যাডভান্সড কাস্টম কালার ও গ্রেডিয়েন্ট কন্ট্রোল (নতুন)
+    else if (section === "custom_colors") {
+      data.customColors = body.customColors;
+    }
 
     writeData(data);
     return NextResponse.json({ success: true, message: "সেটিংস সফলভাবে আপডেট হয়েছে!" });

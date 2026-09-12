@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState<"general" | "banner" | "stats" | "admission" | "labels" | "theme" | "security" | "backup">("general");
+  const [activeTab, setActiveTab] = useState<"general" | "banner" | "stats" | "admission" | "labels" | "theme" | "advanced_colors" | "security" | "backup">("general");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
@@ -55,6 +55,15 @@ export default function SettingsPage() {
 
   // থিম কালার স্টেট
   const [themeColor, setThemeColor] = useState("emerald");
+  const [customColors, setCustomColors] = useState({
+    primary: "#2563eb",
+    secondary: "#10b981",
+    navbarBg: "#1e3a8a",
+    footerBg: "#0f172a",
+    buttonGradient1: "#3b82f6",
+    buttonGradient2: "#1d4ed8",
+    headerText: "#ffffff"
+  });
 
   const fetchAllSettings = async () => {
     const res = await fetch("/api/school-info");
@@ -74,8 +83,11 @@ export default function SettingsPage() {
       setBgPosition(data.heroBanner.bgPosition || "center");
       setTextAlign(data.heroBanner.textAlign || "center");
 
-      // থিম কালার লোড
+      // থিম কালার ও কাস্টম কালার লোড
       setThemeColor(data.themeColor || "emerald");
+      if (data.customColors) {
+        setCustomColors(data.customColors);
+      }
 
       // পরিসংখ্যান ডাটা লোড (নতুন)
       const stats = data.stats || {};
@@ -268,6 +280,30 @@ export default function SettingsPage() {
     setTimeout(() => setMessage(""), 3000);
   };
 
+  const handleSaveCustomColors = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMessage("");
+    try {
+      const res = await fetch("/api/update-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ section: "custom_colors", customColors })
+      });
+      if (res.ok) {
+        setMessage("অ্যাডভান্সড কাস্টম কালার ও গ্রেডিয়েন্ট সফলভাবে সংরক্ষিত হয়েছে!");
+        setIsError(false);
+        fetchAllSettings();
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("school-info-updated", { detail: { customColors } }));
+        }
+      }
+    } catch (err) {
+      setMessage("সংরক্ষণ করতে সমস্যা হয়েছে!");
+      setIsError(true);
+    }
+    setTimeout(() => setMessage(""), 3000);
+  };
+
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setPassLoading(true);
@@ -332,6 +368,7 @@ export default function SettingsPage() {
         </button>
         <button onClick={() => { setActiveTab("labels"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "labels" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>✍️ বাটন ও লেখার ভাষা সেটিংস</button>
         <button onClick={() => { setActiveTab("theme"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "theme" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🎨 থিম কালার কন্ট্রোল</button>
+        <button onClick={() => { setActiveTab("advanced_colors"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "advanced_colors" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🌈 অ্যাডভান্সড কালার ও গ্রেডিয়েন্ট</button>
         <button onClick={() => { setActiveTab("security"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "security" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>🔑 নিরাপত্তা (পাসওয়ার্ড)</button>
         <button onClick={() => { setActiveTab("backup"); setMessage(""); }} className={`pb-4 px-4 font-bold text-sm transition ${activeTab === "backup" ? "border-b-4 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-800"}`}>💾 ব্যাকআপ ও রিস্টোর</button>
       </div>
@@ -378,6 +415,80 @@ export default function SettingsPage() {
           </div>
 
           <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg transition shadow-md">থিম কালার সেভ করুন</button>
+        </form>
+      )}
+
+      {activeTab === "advanced_colors" && (
+        <form onSubmit={handleSaveCustomColors} className="bg-white p-8 rounded-xl border space-y-6 max-w-3xl">
+          <h2 className="text-xl font-bold text-gray-800 border-b pb-3 mb-6">🌈 অ্যাডভান্সড কালার ও গ্রেডিয়েন্ট কন্ট্রোল সেন্টার</h2>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            এখানে থেকে আপনি ওয়েবসাইটের প্রতিটি গুরুত্বপূর্ণ অংশের সুনির্দিষ্ট রং (Hex Code) এবং বাটন গ্রেডিয়েন্টের শুরু ও শেষের রং নিজের ইচ্ছামতো কন্ট্রোল করতে পারবেন।
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+            <div className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 space-y-2">
+              <label className="block text-sm font-bold text-gray-800">প্রাথমিক অ্যাকসেন্ট কালার (Primary)</label>
+              <div className="flex items-center gap-3">
+                <input type="color" value={customColors.primary} onChange={(e) => setCustomColors({...customColors, primary: e.target.value})} className="w-12 h-10 rounded cursor-pointer border p-1" />
+                <input type="text" value={customColors.primary} onChange={(e) => setCustomColors({...customColors, primary: e.target.value})} className="flex-1 px-3 py-2 text-sm rounded-lg border bg-white font-mono text-gray-900" />
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 space-y-2">
+              <label className="block text-sm font-bold text-gray-800">সেকেন্ডারি কালার (Secondary)</label>
+              <div className="flex items-center gap-3">
+                <input type="color" value={customColors.secondary} onChange={(e) => setCustomColors({...customColors, secondary: e.target.value})} className="w-12 h-10 rounded cursor-pointer border p-1" />
+                <input type="text" value={customColors.secondary} onChange={(e) => setCustomColors({...customColors, secondary: e.target.value})} className="flex-1 px-3 py-2 text-sm rounded-lg border bg-white font-mono text-gray-900" />
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 space-y-2">
+              <label className="block text-sm font-bold text-gray-800">নেভবার ব্যাকগ্রাউন্ড কালার (Navbar BG)</label>
+              <div className="flex items-center gap-3">
+                <input type="color" value={customColors.navbarBg} onChange={(e) => setCustomColors({...customColors, navbarBg: e.target.value})} className="w-12 h-10 rounded cursor-pointer border p-1" />
+                <input type="text" value={customColors.navbarBg} onChange={(e) => setCustomColors({...customColors, navbarBg: e.target.value})} className="flex-1 px-3 py-2 text-sm rounded-lg border bg-white font-mono text-gray-900" />
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 space-y-2">
+              <label className="block text-sm font-bold text-gray-800">ফুটার ব্যাকগ্রাউন্ড কালার (Footer BG)</label>
+              <div className="flex items-center gap-3">
+                <input type="color" value={customColors.footerBg} onChange={(e) => setCustomColors({...customColors, footerBg: e.target.value})} className="w-12 h-10 rounded cursor-pointer border p-1" />
+                <input type="text" value={customColors.footerBg} onChange={(e) => setCustomColors({...customColors, footerBg: e.target.value})} className="flex-1 px-3 py-2 text-sm rounded-lg border bg-white font-mono text-gray-900" />
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 space-y-2">
+              <label className="block text-sm font-bold text-gray-800">বাটন গ্রেডিয়েন্ট - শুরু (Gradient Start)</label>
+              <div className="flex items-center gap-3">
+                <input type="color" value={customColors.buttonGradient1} onChange={(e) => setCustomColors({...customColors, buttonGradient1: e.target.value})} className="w-12 h-10 rounded cursor-pointer border p-1" />
+                <input type="text" value={customColors.buttonGradient1} onChange={(e) => setCustomColors({...customColors, buttonGradient1: e.target.value})} className="flex-1 px-3 py-2 text-sm rounded-lg border bg-white font-mono text-gray-900" />
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 space-y-2">
+              <label className="block text-sm font-bold text-gray-800">বাটন গ্রেডিয়েন্ট - শেষ (Gradient End)</label>
+              <div className="flex items-center gap-3">
+                <input type="color" value={customColors.buttonGradient2} onChange={(e) => setCustomColors({...customColors, buttonGradient2: e.target.value})} className="w-12 h-10 rounded cursor-pointer border p-1" />
+                <input type="text" value={customColors.buttonGradient2} onChange={(e) => setCustomColors({...customColors, buttonGradient2: e.target.value})} className="flex-1 px-3 py-2 text-sm rounded-lg border bg-white font-mono text-gray-900" />
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-slate-900 text-white flex items-center justify-between">
+            <div>
+              <div className="text-xs text-slate-400">গ্রেডিয়েন্ট লাইভ প্রিভিউ</div>
+              <div className="text-sm font-bold mt-1">বাটন ও হেডার লুক</div>
+            </div>
+            <div 
+              className="px-6 py-2.5 rounded-lg text-white font-bold text-sm shadow-lg"
+              style={{ background: `linear-gradient(to right, ${customColors.buttonGradient1}, ${customColors.buttonGradient2})` }}
+            >
+              প্রিভিউ বাটন
+            </div>
+          </div>
+
+          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-lg transition shadow-md">অ্যাডভান্সড কালার সেভ করুন</button>
         </form>
       )}
 

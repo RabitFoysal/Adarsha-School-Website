@@ -17,7 +17,16 @@ export async function GET() {
       stats: data.stats,
       admission: data.admission,
       uiLabels: data.uiLabels,
-      themeColor: data.themeColor || "emerald"
+      themeColor: data.themeColor || "emerald",
+      customColors: data.customColors || {
+        primary: "#2563eb",
+        secondary: "#10b981",
+        navbarBg: "#1e3a8a",
+        footerBg: "#0f172a",
+        buttonGradient1: "#3b82f6",
+        buttonGradient2: "#1d4ed8",
+        headerText: "#ffffff"
+      }
     }, {
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0'
