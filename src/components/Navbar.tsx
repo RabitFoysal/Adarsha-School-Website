@@ -69,10 +69,12 @@ export default function Navbar() {
   const toggleLang = () => {
     const newLang = lang === "bn" ? "en" : "bn";
     setLang(newLang);
-    localStorage.setItem("site_lang", newLang);
-    window.dispatchEvent(new CustomEvent("language-changed", { detail: newLang }));
-    // Force reload or re-render state across components
-    window.location.reload();
+    if (typeof window !== "undefined") {
+      localStorage.setItem("site_lang", newLang);
+      document.cookie = `site_lang=${newLang}; path=/; max-age=31536000`;
+      window.dispatchEvent(new CustomEvent("language-changed", { detail: newLang }));
+      window.location.reload();
+    }
   };
 
   const links = navbarLinks || [];
@@ -142,11 +144,11 @@ export default function Navbar() {
               )
             )}
 
-            {/* ভাষা পরিবর্তন টগল বাটন */}
+            {/* ভাষা পরিবর্তন টগল বাটন (EIIN স্টাইলে ডিজাইন করা) */}
             <button
               type="button"
               onClick={toggleLang}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-black transition cursor-pointer text-xs shadow-xs"
+              className="inline-flex items-center gap-1.5 text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40 text-xs font-semibold hover:bg-amber-900/60 transition cursor-pointer shadow-xs"
               title="Switch Language / ভাষা পরিবর্তন করুন"
             >
               <span>🌐</span>

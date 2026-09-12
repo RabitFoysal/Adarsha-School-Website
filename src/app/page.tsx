@@ -952,6 +952,22 @@ function SidebarImageWidget({ imageUrl }: { imageUrl: string }) {
 
 // মূল হোমপেজ কম্পোনেন্ট
 export default function Home() {
+  const [lang, setLang] = useState<string>("bn");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("site_lang") || "bn";
+      setLang(saved);
+      const handleLangChange = (e: any) => {
+        if (e.detail) setLang(e.detail);
+      };
+      window.addEventListener("language-changed", handleLangChange);
+      return () => window.removeEventListener("language-changed", handleLangChange);
+    }
+  }, []);
+
+  const t = (bnText: string, enText: string) => (lang === "en" ? enText : bnText);
+
   const heroBanner = demoData?.heroBanner;
   const teachers = demoData?.teachers || [];
   const notices = demoData?.notices || [];
