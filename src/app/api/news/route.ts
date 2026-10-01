@@ -1,51 +1,41 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { getSchoolData, saveSchoolData } from "@/lib/dataProvider";
 
-export const dynamic = 'force-dynamic';
-
-const dataFilePath = path.join(process.cwd(), "src/data/demoData.json");
-
-const readData = () => {
-  return JSON.parse(fs.readFileSync(dataFilePath, "utf8"));
-};
-
-const writeData = (data: any) => {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-};
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const data = readData();
-  return NextResponse.json(data.news || []);
+  const data = await getSchoolData();
+  return NextResponse.json(data.news || [], {
+    headers: {
+      "Cache-Control": "public, s-maxage=5, stale-while-revalidate=29",
+    },
+  });
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const data = readData();
+    const data = await getSchoolData(true);
 
     if (!data.news) data.news = [];
 
-    // এডিট মোড
     if (body.id) {
-      data.news = data.news.map((item: any) => 
-        item.id === body.id ? { ...item, title: body.title, description: body.description } : item
+      data.news = data.news.map((n: any) =>
+        n.id === body.id ? { ...n, ...body } : n
       );
-    } 
-    // অ্যাড মোড
-    else {
-      const newNews = {
+    } else {
+      const newItem = {
         id: Date.now(),
         title: body.title,
-        description: body.description
+        description: body.description || "",
       };
-      data.news.push(newNews);
+      data.news.unshift(newItem);
     }
 
-    writeData(data);
-    return NextResponse.json({ success: true, message: "সংরক্ষিত হয়েছে!" });
-  } catch (error) {
-    return NextResponse.json({ success: false, message: "সমস্যা হয়েছে!" }, { status: 500 });
+    const saveRes = await saveSchoolData(data);
+    return NextResponse.json({ message: "জরুরি খবর সংরক্ষিত হয়েছে!", ...saveRes });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, message: error?.message || "ব্যর্থ হয়েছে" }, { status: 500 });
   }
 }
 
@@ -54,12 +44,12 @@ export async function DELETE(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = Number(searchParams.get("id"));
 
-    const data = readData();
-    data.news = data.news.filter((item: any) => item.id !== id);
-    writeData(data);
+    const data = await getSchoolData(true);
+    data.news = (data.news || []).filter((n: any) => n.id !== id);
+    const saveRes = await saveSchoolData(data);
 
-    return NextResponse.json({ success: true, message: "ডিলিট করা হয়েছে!" });
-  } catch (error) {
-    return NextResponse.json({ success: false, message: "সমস্যা হয়েছে!" }, { status: 500 });
+    return NextResponse.json({ message: "মুছে ফেলা হয়েছে!", ...saveRes });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, message: error?.message || "ব্যর্থ হয়েছে" }, { status: 500 });
   }
 }

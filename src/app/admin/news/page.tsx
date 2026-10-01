@@ -1,162 +1,126 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAdminData } from "@/context/AdminDataContext";
+import { Newspaper, Plus, Edit2, Trash2, Save, X } from "lucide-react";
 
-type NewsItem = {
-  id: number;
-  title: string;
-  description: string;
-};
-
-export default function ManageNews() {
-  const [news, setNews] = useState<NewsItem[]>([]);
+export default function ManageNewsPage() {
+  const { data, refreshData } = useAdminData();
+  const [news, setNews] = useState<any[]>(data.news || []);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [editId, setEditId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const fetchNews = async () => {
-    const res = await fetch("/api/news");
-    const data = await res.json();
-    setNews(data);
-  };
-
   useEffect(() => {
-    fetchNews();
-  }, []);
+    if (data.news) setNews(data.news);
+  }, [data.news]);
 
-  const handleEdit = (item: NewsItem) => {
-    setTitle(item.title);
-    setDescription(item.description);
-    setEditId(item.id);
+  const handleEdit = (n: any) => {
+    setEditId(n.id);
+    setTitle(n.title);
+    setDescription(n.description || "");
   };
 
-  // এডিটের স্টেট বাইন্ডিং করার সুবিধা
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const startEdit = (item: NewsItem) => {
-    setSelectedId(item.id);
-    setTitle(item.title);
-    setDescription(item.description);
-  };
-
-  const cancelEdit = () => {
-    setSelectedId(null);
+  const handleCancel = () => {
+    setEditId(null);
     setTitle("");
     setDescription("");
   };
 
-  const handleAddOrUpdateNews = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    const res = await fetch("/api/news", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: selectedId, title, description })
-    });
-    
-    if (res.ok) {
-      setMessage(selectedId ? "বার্তাটি সফলভাবে আপডেট হয়েছে!" : "নতুন স্ক্রলিং বার্তা যুক্ত হয়েছে!");
-      cancelEdit();
-      fetchNews();
+    try {
+      const res = await fetch("/api/news", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editId, title, description }),
+      });
+      if (res.ok) {
+        setMessage(editId ? "খবর আপডেট হয়েছে!" : "নতুন খবর যুক্ত হয়েছে!");
+        handleCancel();
+        refreshData();
+      }
+    } catch {
+      setMessage("সংরক্ষণ ব্যর্থ!");
     }
     setLoading(false);
     setTimeout(() => setMessage(""), 3000);
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("আপনি কি নিশ্চিত যে এই বার্তাটি ডিলিট করতে চান?")) return;
-    await fetch(`/api/news?id=${id}`, { method: "DELETE" });
-    fetchNews();
+    if (!confirm("আপনি কি নিশ্চিতভাবে এই খবরটি মুছে ফেলতে চান?")) return;
+    try {
+      const res = await fetch(`/api/news?id=${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setMessage("মুছে ফেলা হয়েছে!");
+        refreshData();
+      }
+    } catch {}
+    setTimeout(() => setMessage(""), 3000);
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">জরুরি স্ক্রলিং বার্তা</h1>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* ফর্ম */}
-        <div className="lg:col-span-1 bg-white p-6 rounded-xl shadow-sm border border-gray-200 h-fit">
-          <h2 className="text-xl font-bold text-gray-800 mb-6 border-b pb-4">
-            {selectedId ? "✍️ স্ক্রলিং বার্তা এডিট করুন" : "নতুন বার্তা তৈরি করুন"}
-          </h2>
-          
-          {message && (
-            <div className="bg-green-50 text-green-600 p-3 rounded-lg mb-6 border border-green-200 font-medium text-sm">
-              {message}
-            </div>
-          )}
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900">জরুরি খবর ও স্ক্রলিং টিকার</h1>
+        <p className="text-xs text-slate-500 mt-1">ওয়েবসাইটের শীর্ষে প্রদর্শিত স্ক্রলিং লাইভ খবর পরিচালনা করুন</p>
+      </div>
 
-          <form onSubmit={handleAddOrUpdateNews} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">স্ক্রলিং মেসেজ (সংক্ষিপ্ত)</label>
-              <input 
-                type="text" required value={title} onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 outline-none" 
-                placeholder="হোমপেজে যা স্ক্রল করবে..." 
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">বিস্তারিত খবর (Details)</label>
-              <textarea 
-                rows={5} required value={description} onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 outline-none" 
-                placeholder="ক্লিক করলে যে বিস্তারিত খবরটি দেখা যাবে..." 
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <button 
-                type="submit" disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg transition shadow-md disabled:bg-blue-400"
-              >
-                {loading ? "প্রকাশ হচ্ছে..." : selectedId ? "আপডেট করুন" : "বার্তা প্রকাশ করুন"}
-              </button>
+      {message && <div className="p-4 rounded-2xl bg-emerald-50 text-emerald-800 text-xs font-bold">{message}</div>}
 
-              {selectedId && (
-                <button 
-                  type="button" onClick={cancelEdit}
-                  className="w-full bg-red-50 text-red-600 hover:bg-red-100 font-bold py-2 rounded-lg transition text-sm"
-                >
-                  ❌ বাতিল করুন
-                </button>
-              )}
-            </div>
-          </form>
+      <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs space-y-4 max-w-2xl">
+        <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+          {editId ? <Edit2 className="w-4 h-4 text-blue-600" /> : <Plus className="w-4 h-4 text-blue-600" />}
+          <span>{editId ? "খবর সম্পাদনা করুন" : "নতুন জরুরি খবর যুক্ত করুন"}</span>
+        </h2>
+
+        <div>
+          <label className="block text-xs font-bold text-slate-700 mb-1">খবরের শিরোনাম (টিকারে প্রদর্শিত হবে) *</label>
+          <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="যেমন: ২০২৬ শিক্ষাবর্ষে অনলাইনে ভর্তি কার্যক্রম শুরু হয়েছে" className="w-full px-3.5 py-2.5 text-xs md:text-sm rounded-xl border border-slate-200 outline-none" />
         </div>
 
-        {/* তালিকা */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h2 className="text-xl font-bold text-gray-800 mb-6 border-b pb-4">স্ক্রলিং বার্তার তালিকা</h2>
-          
-          <div className="space-y-4">
-            {news.map((item) => (
-              <div key={item.id} className="p-4 rounded-xl border border-gray-150 hover:bg-gray-50 transition flex justify-between items-start gap-4">
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-800 mb-1">{item.title}</h4>
-                  <p className="text-gray-500 text-sm line-clamp-2">{item.description}</p>
-                </div>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => startEdit(item)}
-                    className="text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-md text-xs font-semibold transition"
-                  >
-                    এডিট
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(item.id)}
-                    className="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md text-xs font-semibold transition"
-                  >
-                    ডিলিট
-                  </button>
+        <div>
+          <label className="block text-xs font-bold text-slate-700 mb-1">বিস্তারিত বিবরণ (ঐচ্ছিক)</label>
+          <textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="খবরের অতিরিক্ত বিবরণ..." className="w-full px-3.5 py-2.5 text-xs md:text-sm rounded-xl border border-slate-200 outline-none" />
+        </div>
+
+        <div className="flex items-center gap-3 pt-2">
+          <button type="submit" disabled={loading} className="bg-blue-600 text-white font-bold py-2.5 px-6 rounded-xl text-xs sm:text-sm cursor-pointer flex items-center gap-2">
+            <Save className="w-4 h-4" />
+            <span>{editId ? "আপডেট সংরক্ষণ করুন" : "খবর প্রকাশ করুন"}</span>
+          </button>
+          {editId && (
+            <button type="button" onClick={handleCancel} className="bg-slate-100 text-slate-700 font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm cursor-pointer">
+              বাতিল
+            </button>
+          )}
+        </div>
+      </form>
+
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-xs p-6 space-y-4">
+        <h2 className="text-base font-bold text-slate-900">সকল স্ক্রলিং খবর ({news.length}টি)</h2>
+        <div className="space-y-3">
+          {news.map((n: any, idx: number) => (
+            <div key={n.id} className="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0">
+                  #{idx + 1}
+                </span>
+                <div>
+                  <h4 className="font-bold text-sm text-slate-900">{n.title}</h4>
+                  {n.description && <p className="text-xs text-slate-500 line-clamp-1">{n.description}</p>}
                 </div>
               </div>
-            ))}
-          </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button type="button" onClick={() => handleEdit(n)} className="p-1.5 rounded-lg bg-white border text-blue-600 cursor-pointer"><Edit2 className="w-3.5 h-3.5" /></button>
+                <button type="button" onClick={() => handleDelete(n.id)} className="p-1.5 rounded-lg bg-white border text-rose-600 cursor-pointer"><Trash2 className="w-3.5 h-3.5" /></button>
+              </div>
+            </div>
+          ))}
         </div>
-
       </div>
     </div>
   );

@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { getSchoolData, saveSchoolData } from "@/lib/dataProvider";
+import demoData from "@/data/demoData.json";
 
 export const dynamic = 'force-dynamic';
-const dataFilePath = path.join(process.cwd(), "src/data/demoData.json");
-const readData = () => JSON.parse(fs.readFileSync(dataFilePath, "utf8"));
-const writeData = (data: any) => fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
 
 export async function GET() {
-  const data = readData();
+  const data = await getSchoolData();
   return NextResponse.json({
     customPages: data.customPages || [],
     navbarLinks: data.navbarLinks || [],
@@ -19,7 +16,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const data = readData();
+    const data = await getSchoolData();
     const { action } = body;
 
     if (!data.navbarLinks) data.navbarLinks = [];
@@ -49,16 +46,58 @@ export async function POST(request: Request) {
         return link;
       });
     }
+    // খ.২ মেনু লিঙ্ক ডিলিট করা
+    else if (action === "delete_menu") {
+      data.navbarLinks = (data.navbarLinks || []).filter((link: any) => link.id !== body.id);
+    }
+    // খ.৩ মেনু লিঙ্ক রি-অর্ডার করা
+    else if (action === "reorder_menu") {
+      if (Array.isArray(body.navbarLinks)) {
+        data.navbarLinks = body.navbarLinks;
+      }
+    }
+    // খ.৪ মেনু লিঙ্ক স্ট্যান্ডার্ড রিসেট করা
+    else if (action === "reset_menu") {
+      data.navbarLinks = (demoData as any).navbarLinks || [];
+    }
     // গ. ডাইনামিক কাস্টম পেজ
     else if (action === "save_page") {
       if (!data.customPages) data.customPages = [];
-      if (body.id) {
-        data.customPages = data.customPages.map((p: any) => 
-          p.id === body.id ? { ...p, title: body.title, slug: body.slug, template: body.template, content: body.content, listItems: body.listItems || [] } : p
-        );
+      const pageId = body.id ? Number(body.id) : Date.now();
+      const pagePayload = {
+        id: pageId,
+        title: body.title || "শিরোনামহীন পৃষ্ঠা",
+        slug: body.slug || `page-${pageId}`,
+        template: body.template || "text",
+        content: body.content || "",
+        image: body.image || "",
+        imageSize: body.imageSize || "medium",
+        imagePosition: body.imagePosition || "top",
+        imageCaption: body.imageCaption || "",
+        pdfUrl: body.pdfUrl || "",
+        pdfMode: body.pdfMode || "button",
+        pdfName: body.pdfName || "",
+        listItems: body.listItems || [],
+        updatedAt: new Date().toISOString()
+      };
+
+      const existingIndex = data.customPages.findIndex((p: any) => p.id === pageId);
+      if (existingIndex !== -1) {
+        data.customPages[existingIndex] = {
+          ...data.customPages[existingIndex],
+          ...pagePayload,
+          listItems: data.customPages[existingIndex].listItems || pagePayload.listItems
+        };
       } else {
-        data.customPages.push({ id: Date.now(), title: body.title, slug: body.slug, template: body.template, content: body.content, listItems: [] });
+        data.customPages.push(pagePayload);
       }
+
+      await saveSchoolData(data);
+      return NextResponse.json({ 
+        success: true, 
+        message: body.id ? "পেজটি সফলভাবে আপডেট হয়েছে!" : "নতুন পেজ তৈরি হয়েছে!",
+        page: pagePayload 
+      });
     }
     // ঘ. কাস্টম পেজের মেম্বার লিস্ট এডিট
     else if (action === "save_page_item") {
@@ -86,16 +125,22 @@ export async function POST(request: Request) {
       data.uiLabels = body.labels;
     }
 
-    writeData(data);
+    await saveSchoolData(data);
     return NextResponse.json({ success: true, message: "সংরক্ষিত!" });
-  } catch (error) { return NextResponse.json({ success: false }, { status: 500 }); }
+  } catch (error) { 
+    return NextResponse.json({ success: false }, { status: 500 }); 
+  }
 }
 
 export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id = Number(searchParams.get("id"));
-  const data = readData();
-  data.customPages = (data.customPages || []).filter((p: any) => p.id !== id);
-  writeData(data);
-  return NextResponse.json({ success: true });
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = Number(searchParams.get("id"));
+    const data = await getSchoolData();
+    data.customPages = (data.customPages || []).filter((p: any) => p.id !== id);
+    await saveSchoolData(data);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ success: false }, { status: 500 });
+  }
 }

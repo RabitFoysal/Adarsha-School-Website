@@ -1,35 +1,30 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { getSchoolData, saveSchoolData } from "@/lib/dataProvider";
 
-const dataFilePath = path.join(process.cwd(), "src/data/demoData.json");
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { title, subtitle, image, sidebarImage } = body;
 
-    // ফাইল থেকে ডাটা রিড করা
-    const fileData = fs.readFileSync(dataFilePath, "utf8");
-    const data = JSON.parse(fileData);
+    const data = await getSchoolData(true);
 
-    // হিরো ব্যানার অবজেক্টটি আপডেট করা
+    if (!data.heroBanner) data.heroBanner = {};
     data.heroBanner = {
-      title: title || data.heroBanner.title,
-      subtitle: subtitle || data.heroBanner.subtitle,
-      image: image || data.heroBanner.image
+      ...data.heroBanner,
+      title: title !== undefined ? title : data.heroBanner.title,
+      subtitle: subtitle !== undefined ? subtitle : data.heroBanner.subtitle,
+      image: image !== undefined ? image : data.heroBanner.image,
     };
 
-    // সাইডবার ইমেজটি আপডেট করা (যদি নতুন ইমেজ পাঠায়)
     if (sidebarImage !== undefined) {
       data.sidebarImage = sidebarImage;
     }
 
-    // ফাইলে নতুন ডাটা সেভ করা
-    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-
-    return NextResponse.json({ success: true, message: "সেটিংস সফলভাবে আপডেট হয়েছে!" });
-  } catch (error) {
-    return NextResponse.json({ success: false, message: "সার্ভারে সমস্যা হয়েছে!" }, { status: 500 });
+    const saveRes = await saveSchoolData(data);
+    return NextResponse.json({ message: "ব্যানার সেটিংস সফলভাবে আপডেট হয়েছে!", ...saveRes });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, message: error?.message || "সার্ভারে সমস্যা হয়েছে!" }, { status: 500 });
   }
 }

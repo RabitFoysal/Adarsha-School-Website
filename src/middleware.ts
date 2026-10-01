@@ -2,15 +2,31 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  // ইউজারের ব্রাউজারে লগইন কুকি (Cookie) আছে কি না চেক করছি
+  const adminSession = request.cookies.get('admin_session')?.value;
   const isLoggedIn = request.cookies.get('isLoggedIn')?.value;
+  const isAuthenticated = adminSession === 'authenticated' || isLoggedIn === 'true';
 
-  // যদি কেউ /admin লিংকে যেতে চায়
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    // এবং সে যদি লগইন করা না থাকে
-    if (isLoggedIn !== 'true') {
-      // তাকে জোর করে /login পেজে পাঠিয়ে দাও
-      return NextResponse.redirect(new URL('/login', request.url));
+  const { pathname } = request.nextUrl;
+
+  // Protect /admin routes
+  if (pathname.startsWith('/admin')) {
+    if (!isAuthenticated) {
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      return NextResponse.redirect(loginUrl);
     }
   }
+
+  // If already logged in, redirect away from /login to /admin
+  if (pathname === '/login') {
+    if (isAuthenticated) {
+      return NextResponse.redirect(new URL('/admin', request.url));
+    }
+  }
+
+  return NextResponse.next();
 }
+
+export const config = {
+  matcher: ['/admin/:path*', '/login'],
+};

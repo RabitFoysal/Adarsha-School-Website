@@ -1,58 +1,44 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { getSchoolData, saveSchoolData } from "@/lib/dataProvider";
 
-export const dynamic = 'force-dynamic';
-
-const dataFilePath = path.join(process.cwd(), "src/data/demoData.json");
-
-const readData = () => {
-  return JSON.parse(fs.readFileSync(dataFilePath, "utf8"));
-};
-
-const writeData = (data: any) => {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-};
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const data = readData();
-  return NextResponse.json(data.blogs || []);
+  const data = await getSchoolData();
+  return NextResponse.json(data.blogs || [], {
+    headers: {
+      "Cache-Control": "public, s-maxage=5, stale-while-revalidate=29",
+    },
+  });
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const data = readData();
-    
-    const today = new Date().toISOString().split('T')[0];
+    const data = await getSchoolData(true);
 
     if (!data.blogs) data.blogs = [];
 
-    // এডিট মোড (তারিখ অপরিবর্তিত থাকবে)
     if (body.id) {
-      data.blogs = data.blogs.map((blog: any) => 
-        blog.id === body.id 
-          ? { ...blog, title: body.title, content: body.content, author: body.author, image: body.image } 
-          : blog
+      data.blogs = data.blogs.map((b: any) =>
+        b.id === body.id ? { ...b, ...body } : b
       );
-    } 
-    // নতুন তৈরি মোড
-    else {
+    } else {
       const newBlog = {
         id: Date.now(),
         title: body.title,
         content: body.content,
-        author: body.author || "অ্যাডমিন",
-        image: body.image || "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800",
-        date: today
+        author: body.author || "বিদ্যালয় পরিবার",
+        date: body.date || new Date().toISOString().split("T")[0],
+        image: body.image || "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop",
       };
       data.blogs.unshift(newBlog);
     }
 
-    writeData(data);
-    return NextResponse.json({ success: true, message: "সংরক্ষিত হয়েছে!" });
-  } catch (error) {
-    return NextResponse.json({ success: false, message: "সমস্যা হয়েছে!" }, { status: 500 });
+    const saveRes = await saveSchoolData(data);
+    return NextResponse.json({ success: Boolean(saveRes), message: "ব্লগ সংরক্ষিত হয়েছে!" });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, message: error?.message || "ব্যর্থ হয়েছে" }, { status: 500 });
   }
 }
 
@@ -61,12 +47,12 @@ export async function DELETE(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = Number(searchParams.get("id"));
 
-    const data = readData();
-    data.blogs = data.blogs.filter((blog: any) => blog.id !== id);
-    writeData(data);
+    const data = await getSchoolData(true);
+    data.blogs = (data.blogs || []).filter((b: any) => b.id !== id);
+    const saveRes = await saveSchoolData(data);
 
-    return NextResponse.json({ success: true, message: "ডিলিট করা হয়েছে!" });
-  } catch (error) {
-    return NextResponse.json({ success: false, message: "সমস্যা হয়েছে!" }, { status: 500 });
+    return NextResponse.json({ success: Boolean(saveRes), message: "ব্লগ মুছে ফেলা হয়েছে!" });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, message: error?.message || "ব্যর্থ হয়েছে" }, { status: 500 });
   }
 }

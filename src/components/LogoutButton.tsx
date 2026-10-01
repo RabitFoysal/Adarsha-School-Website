@@ -6,11 +6,10 @@ export default function LogoutButton() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    // লগআউট API কে কল করা হচ্ছে
-    await fetch("/api/logout", { method: "POST" });
-    // লগআউট সফল হলে লগইন পেজে পাঠিয়ে দেওয়া হবে
-    router.push("/login");
-    router.refresh();
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } catch {}
+    window.location.href = "/login";
   };
 
   return (

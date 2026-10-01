@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { saveSchoolData } from "@/lib/dataProvider";
 
-const dataFilePath = path.join(process.cwd(), "src/data/demoData.json");
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
     
-    // Basic validation to ensure it's a valid JSON object
     if (!data || typeof data !== "object") {
-      return NextResponse.json({ error: "Invalid backup data" }, { status: 400 });
+      return NextResponse.json({ success: false, error: "Invalid backup data" }, { status: 400 });
     }
 
-    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), "utf8");
-    
-    return NextResponse.json({ success: true, message: "Backup restored successfully!" });
+    const saveRes = await saveSchoolData(data);
+    return NextResponse.json({ success: Boolean(saveRes), message: "ব্যাকআপ সফলভাবে রিস্টোর হয়েছে!" });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to restore backup" }, { status: 500 });
+    return NextResponse.json({ success: false, error: "Failed to restore backup" }, { status: 500 });
   }
 }

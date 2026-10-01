@@ -1,23 +1,41 @@
 import { NextResponse } from "next/server";
-import adminData from "@/data/adminData.json";
+import { getAdminData } from "@/lib/dataProvider";
 
-export async function POST(request: Request) {
-  const body = await request.json();
-  const { username, password } = body;
+export const dynamic = "force-dynamic";
 
-  // আইডি ও পাসওয়ার্ড মিলছে কি না চেক করা
-  if (username === adminData.username && password === adminData.password) {
-    // মিললে একটি সিকিউর কুকি সেট করে দেওয়া (যা হ্যাক করা কঠিন)
-    const response = NextResponse.json({ success: true });
-    response.cookies.set("isLoggedIn", "true", {
-      path: "/",
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    });
-    return response;
+export async function POST(req: Request) {
+  try {
+    const { username, password } = await req.json();
+    const admin = await getAdminData();
+
+    const cleanUsername = String(username || "").trim();
+    const cleanPassword = String(password || "").trim();
+    const targetUsername = String(admin.username || "admin").trim();
+    const targetPassword = String(admin.password || "password123").trim();
+
+    // Check credentials (case-insensitive for username, exact match for password)
+    const isUsernameMatch = cleanUsername.toLowerCase() === targetUsername.toLowerCase();
+    const isPasswordMatch = cleanPassword === targetPassword;
+
+    if (isUsernameMatch && isPasswordMatch) {
+      const response = NextResponse.json({ success: true, message: "লগইন সফল!" });
+      
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax" as const,
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      };
+
+      response.cookies.set("admin_session", "authenticated", cookieOptions);
+      response.cookies.set("isLoggedIn", "true", cookieOptions);
+
+      return response;
+    }
+
+    return NextResponse.json({ success: false, message: "ব্যবহারকারী নাম অথবা পাসওয়ার্ড ভুল!" }, { status: 401 });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, message: "সার্ভারে সমস্যা হয়েছে!" }, { status: 500 });
   }
-
-  // না মিললে এরর পাঠানো
-  return NextResponse.json({ success: false }, { status: 401 });
 }

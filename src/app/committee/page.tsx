@@ -1,8 +1,34 @@
-import demoData from "@/data/demoData.json";
-import { ShieldCheck, Award, School, CheckCircle2 } from "lucide-react";
+import { getSchoolData } from "@/lib/dataProvider";
+import { ShieldCheck, Award, School, CheckCircle2, Phone, Calendar, Briefcase, GraduationCap } from "lucide-react";
+import SafeImage from "@/components/SafeImage";
+import type { Metadata } from "next";
 
-export default function CommitteePage() {
-  const { committee, schoolInfo } = demoData;
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getSchoolData();
+  const schoolName = data?.schoolInfo?.name || "বিদ্যালয়";
+
+  return {
+    title: `ম্যানেজিং কমিটি | ${schoolName}`,
+    description: `${schoolName}-এর পরিচালনা পর্ষদের সম্মানিত সভাপতি, সদস্যবৃন্দ ও পরিচালনা কমিটির বিবরণ।`,
+    openGraph: {
+      title: `পরিচালনা পর্ষদ | ${schoolName}`,
+      description: `${schoolName} ম্যানেজিং কমিটি।`,
+    }
+  };
+}
+
+export default async function CommitteePage() {
+  const data = await getSchoolData();
+  const rawCommittee = data?.committee || [];
+  const schoolInfo = data?.schoolInfo || {};
+
+  const sortedCommittee = [...rawCommittee].sort((a: any, b: any) => {
+    const orderA = a.order !== undefined ? Number(a.order) : 999;
+    const orderB = b.order !== undefined ? Number(b.order) : 999;
+    return orderA - orderB;
+  });
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 min-h-screen">
@@ -21,12 +47,14 @@ export default function CommitteePage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {committee && committee.map((member: any) => {
-          const isPresident = member.designation.includes("সভাপতি");
+        {sortedCommittee && sortedCommittee.map((member: any) => {
+          const isPresident = member.designation && member.designation.includes("সভাপতি");
           return (
             <div 
               key={member.id} 
-              className="bg-white rounded-3xl border border-slate-200 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col group relative"
+              className={`bg-white rounded-3xl border shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col group relative ${
+                isPresident ? "border-amber-300 ring-1 ring-amber-300/60" : "border-slate-200"
+              }`}
             >
               {/* আলংকারিক টপ বর্ডার */}
               <div className={`h-2.5 w-full ${isPresident ? "bg-gradient-to-r from-amber-500 to-orange-500" : "bg-gradient-to-r from-blue-600 to-indigo-600"}`}></div>
@@ -36,8 +64,9 @@ export default function CommitteePage() {
                   {/* পোর্ট্রেট ছবি ফ্রেম */}
                   <div className="relative mx-auto mb-4">
                     <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden ring-4 ring-slate-50 border-2 border-slate-200 mx-auto bg-slate-100 shadow-sm">
-                      <img 
+                      <SafeImage 
                         src={member.image} 
+                        fallbackSrc="https://placehold.co/400x400/e2e8f0/1e293b?text=Member"
                         alt={member.name} 
                         className="w-full h-full object-cover group-hover:scale-108 transition duration-500" 
                       />
@@ -57,15 +86,46 @@ export default function CommitteePage() {
 
                   <span className={`inline-block text-xs font-bold px-3 py-1 rounded-full border ${
                     isPresident 
-                      ? "bg-amber-50 text-amber-800 border-amber-200" 
+                      ? "bg-amber-100 text-amber-900 border-amber-300 font-extrabold" 
                       : "bg-blue-50 text-blue-800 border-blue-200"
-                  } mb-3`}>
+                  } mb-2`}>
                     {member.designation}
                   </span>
 
+                  {member.tenure && (
+                    <p className="text-[11px] text-slate-500 font-medium mb-1 flex items-center justify-center gap-1">
+                      <Calendar className="w-3 h-3 text-slate-400" />
+                      <span>{member.tenure}</span>
+                    </p>
+                  )}
+
+                  {member.qualification && (
+                    <p className="text-[11px] text-slate-600 font-medium mb-1 flex items-center justify-center gap-1">
+                      <GraduationCap className="w-3.5 h-3.5 text-blue-600" />
+                      <span>{member.qualification}</span>
+                    </p>
+                  )}
+
+                  {member.occupation && (
+                    <p className="text-[11px] text-slate-600 font-semibold mb-2 flex items-center justify-center gap-1">
+                      <Briefcase className="w-3 h-3 text-slate-400" />
+                      <span>{member.occupation}</span>
+                    </p>
+                  )}
+
                   <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                    বিদ্যালয়ের উন্নয়ন ও শিক্ষার্থীদের কল্যাণে সক্রিয়ভাবে নিয়োজিত।
+                    {member.bio || "বিদ্যালয়ের সার্বিক নীতি নির্ধারণ ও অবকাঠামোগত উন্নয়নে নিবেদিতপ্রাণ।"}
                   </p>
+
+                  {member.phone && (
+                    <a 
+                      href={`tel:${member.phone}`}
+                      className="inline-flex items-center gap-1.5 text-xs text-amber-800 font-bold bg-amber-50 hover:bg-amber-100 px-3 py-1 rounded-lg mt-3 transition border border-amber-200"
+                    >
+                      <Phone className="w-3 h-3 text-amber-600" />
+                      <span>{member.phone}</span>
+                    </a>
+                  )}
                 </div>
 
                 <div className="border-t border-slate-100 pt-3.5 mt-4 w-full flex items-center justify-center gap-1.5 text-slate-400 text-xs font-medium">

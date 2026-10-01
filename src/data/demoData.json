@@ -1,6 +1,9 @@
 {
   "schoolInfo": {
     "name": "আদর্শ উচ্চ বিদ্যালয়",
+    "slogan": "জ্ঞানের আলোয় উদ্ভাসিত একটি আধুনিক বিদ্যাপীঠ",
+    "eiin": "108420",
+    "established": "১৯৭৫",
     "logo": "https://placehold.co/150x150/2563eb/ffffff?text=School+Logo",
     "contact": {
       "email": "info@adarshaschool.edu.bd",
@@ -20,15 +23,104 @@
     "readMoreButton": "বিস্তারিত পড়ুন"
   },
   "navbarLinks": [
-    { "id": 1, "name": "হোম", "url": "/", "parentId": null, "active": true },
-    { "id": 2, "name": "আমাদের সম্পর্কে", "url": "/about", "parentId": null, "active": true },
-    { "id": 3, "name": "বাণী", "url": "/messages", "parentId": null, "active": true },
-    { "id": 4, "name": "নোটিশ", "url": "/notices", "parentId": null, "active": true },
-    { "id": 5, "name": "ব্লগ", "url": "/blog", "parentId": null, "active": true },
-    { "id": 6, "name": "শিক্ষকবৃন্দ", "url": "/teachers", "parentId": null, "active": true },
-    { "id": 7, "name": "কর্মচারীবৃন্দ", "url": "/staff", "parentId": null, "active": true },
-    { "id": 8, "name": "পরিচালনা পর্ষদ", "url": "/committee", "parentId": null, "active": true },
-    { "id": 9, "name": "যোগাযোগ", "url": "/contact", "parentId": null, "active": true }
+    {
+      "id": 1,
+      "name": "হোম",
+      "url": "/",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "আমাদের সম্পর্কে",
+      "url": "/about",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "বাণী",
+      "url": "/messages",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 4,
+      "name": "নোটিশ",
+      "url": "/notices",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 5,
+      "name": "ব্লগ",
+      "url": "/blog",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 6,
+      "name": "শিক্ষকবৃন্দ",
+      "url": "/teachers",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 7,
+      "name": "চিত্রশালা",
+      "url": "/gallery",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 8,
+      "name": "কর্মচারীবৃন্দ",
+      "url": "/staff",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 9,
+      "name": "পরিচালনা পর্ষদ",
+      "url": "/committee",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 10,
+      "name": "যোগাযোগ",
+      "url": "/contact",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 11,
+      "name": "একাডেমিক",
+      "url": "/academics",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 12,
+      "name": "ভর্তি তথ্য",
+      "url": "/admission-info",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 13,
+      "name": "ফি ও পেমেন্ট",
+      "url": "/fees-payment",
+      "parentId": null,
+      "active": true
+    },
+    {
+      "id": 14,
+      "name": "অ্যালামনাই",
+      "url": "/alumni",
+      "parentId": null,
+      "active": true
+    }
   ],
   "heroBanner": {
     "image": "https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=1920&auto=format&fit=crop",
@@ -59,26 +151,129 @@
     {
       "id": 1,
       "name": "আব্দুর রহমান",
-      "designation": "প্রধান শিক্ষক",
-      "image": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=400&auto=format&fit=crop"
+      "designation": "অধ্যক্ষ / প্রধান শিক্ষক",
+      "section": "administration",
+      "subject": "পদার্থবিজ্ঞান",
+      "qualification": "এম.এসসি (১ম শ্রেণি), বি.এড",
+      "order": 1,
+      "phone": "০১৭১১-XXXXXX",
+      "email": "principal@school.edu.bd",
+      "joiningDate": "২০০৮ (১৮ বছরের অভিজ্ঞতা)",
+      "bloodGroup": "O+",
+      "speech": "জ্ঞান, নৈতিকতা ও নিয়মানুবর্তিতাই আমাদের প্রতিষ্ঠানের মূল ভিত্তি। প্রতিটি শিক্ষার্থীকে আলোকিত মানুষ করাই আমাদের ব্রত।",
+      "isLeadership": true,
+      "image": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=400&auto=format&fit=crop",
+      "bio": "ড. আব্দুর রহমান গত দেড় দশকেরও বেশি সময় ধরে দেশের স্বনামধন্য শিক্ষা প্রতিষ্ঠানে শিক্ষকতা ও প্রশাসনিক নেতৃত্বে দায়িত্ব পালন করে আসছেন। তিনি ঢাকা বিশ্ববিদ্যালয় থেকে পদার্থবিজ্ঞানে প্রথম শ্রেণিতে স্নাতকোত্তর এবং শিক্ষায় বি.এড ডিগ্রি অর্জন করেন।",
+      "content": "আমাদের প্রতিষ্ঠানের লক্ষ্য কেবল পুঁথিগত বিদ্যায় শিক্ষার্থীদের সীমাবদ্ধ রাখা নয়, বরং তাদের মধ্যে মানবিক মূল্যবোধ, আধুনিক বিজ্ঞানমনস্কতা ও দেশপ্রেম জাগ্রত করা।\n\nশিক্ষার্থীদের পাঠদানে আধুনিক মাল্টিমিডিয়া ক্লাসরুম ও উন্নত বিজ্ঞানাগারের সর্বোচ্চ সদ্ব্যবহার নিশ্চিত করা হয়েছে। এছাড়াও সহশিক্ষা কার্যক্রম ও খেলাধুলার মাধ্যমে মেধা ও মননের সুষম বিকাশ সাধন আমাদের নিয়মিত কার্যক্রমের অংশ।\n\nসম্মানিত অভিভাবক ও শুভানুধ্যায়ীদের সহযোগিতায় এই প্রতিষ্ঠানকে একটি আদর্শ বিদ্যাপীঠ হিসেবে গড়ে তুলতে আমরা নিরন্তর কাজ করে যাচ্ছি।"
     },
     {
       "id": 2,
       "name": "তাসলিমা আক্তার",
-      "designation": "সহকারী প্রধান শিক্ষক",
-      "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop"
+      "designation": "উপাধ্যক্ষ / সহকারী প্রধান শিক্ষক (একাডেমিক)",
+      "section": "administration",
+      "subject": "ইংরেজি",
+      "qualification": "এম.এ (ইংরেজি), বি.এড",
+      "order": 2,
+      "phone": "০১৭২২-XXXXXX",
+      "email": "vp.academic@school.edu.bd",
+      "joiningDate": "২০১২ (১৪ বছরের অভিজ্ঞতা)",
+      "bloodGroup": "A+",
+      "speech": "ভাষাজ্ঞান ও সময়োপযোগী দক্ষতা শিক্ষার্থীদের বিশ্ব নাগরিক হিসেবে গড়ে তোলে।",
+      "isLeadership": true,
+      "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop",
+      "bio": "তাসলিমা আক্তার ইংরেজি ভাষা ও সাহিত্যের একজন অভিজ্ঞ শিক্ষক। তিনি দীর্ঘ ১৪ বছর যাবত মাধ্যমিক ও উচ্চ মাধ্যমিক স্তরে ইংরেজি পাঠদানে বিশেষ ভূমিকা রেখে আসছেন।",
+      "content": "একাডেমিক শৃঙ্খলা ও উন্নত কারিকুলাম বাস্তবায়নে তিনি সার্বক্ষণিক দিকনির্দেশনা প্রদান করেন। ভাষা শিক্ষায় শিক্ষার্থীদের জড়তা কাটাতে তিনি নিয়মিত স্পোকেন ইংলিশ ওয়ার্কশপ ও বিতর্ক ক্লাব পরিচালনা করেন।"
     },
     {
       "id": 3,
-      "name": "শফিকুল ইসলাম",
-      "designation": "সিনিয়র শিক্ষক (গণিত)",
-      "image": "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=400&auto=format&fit=crop"
+      "name": "ড. মোহাম্মদ জাহাঙ্গীর",
+      "designation": "উপাধ্যক্ষ (প্রশাসন)",
+      "section": "administration",
+      "subject": "রসায়ন",
+      "qualification": "পিএইচডি (রসায়ন), এম.এসসি",
+      "order": 3,
+      "phone": "০১৭৩৩-XXXXXX",
+      "email": "vp.admin@school.edu.bd",
+      "isLeadership": true,
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop"
     },
     {
       "id": 4,
+      "name": "শফিকুল ইসলাম",
+      "designation": "প্রভাষক (গণিত)",
+      "section": "college",
+      "subject": "উচ্চতর গণিত",
+      "qualification": "এম.এসসি (ফলিত গণিত)",
+      "order": 4,
+      "phone": "০১৭৪৪-XXXXXX",
+      "email": "shafiq.math@school.edu.bd",
+      "isLeadership": false,
+      "image": "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 5,
       "name": "ফারজানা হক",
-      "designation": "সহকারী শিক্ষক (ইংরেজি)",
+      "designation": "প্রভাষক (তথ্য ও যোগাযোগ প্রযুক্তি)",
+      "section": "college",
+      "subject": "আইসিটি (ICT)",
+      "qualification": "বি.এসসি ইন সিএসই",
+      "order": 5,
+      "phone": "০১৭৫৫-XXXXXX",
+      "email": "farzana.ict@school.edu.bd",
+      "isLeadership": false,
       "image": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 6,
+      "name": "কাজী নজরুল ইসলাম",
+      "designation": "সিনিয়র সহকারী শিক্ষক",
+      "section": "high_school",
+      "subject": "বাংলা ভাষা ও সাহিত্য",
+      "qualification": "এম.এ (বাংলা), বি.এড",
+      "order": 6,
+      "phone": "০১৭৬৬-XXXXXX",
+      "email": "nazrul.bangla@school.edu.bd",
+      "isLeadership": false,
+      "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 7,
+      "name": "মমতাজ বেগম",
+      "designation": "সিনিয়র শিক্ষক (বিজ্ঞান)",
+      "section": "high_school",
+      "subject": "সাধারণ বিজ্ঞান ও জীববিজ্ঞান",
+      "qualification": "এম.এসসি (উদ্ভিদবিজ্ঞান)",
+      "order": 7,
+      "phone": "০১৭৭৭-XXXXXX",
+      "email": "momtaz.sci@school.edu.bd",
+      "isLeadership": false,
+      "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 8,
+      "name": "রকিবুল হাসান",
+      "designation": "সহকারী শিক্ষক (প্রাথমিক শাখা)",
+      "section": "primary",
+      "subject": "গণিত ও সাধারণ জ্ঞান",
+      "qualification": "বি.এ, সি-ইন-এড",
+      "order": 8,
+      "phone": "০১৭৮৮-XXXXXX",
+      "email": "rakibul.primary@school.edu.bd",
+      "isLeadership": false,
+      "image": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=400&auto=format&fit=crop"
+    },
+    {
+      "id": 9,
+      "name": "সালমা জাহান",
+      "designation": "সহকারী শিক্ষিকা (প্রাথমিক শাখা)",
+      "section": "primary",
+      "subject": "বাংলা ও অঙ্কন",
+      "qualification": "বি.এস.এস, বি.এড",
+      "order": 9,
+      "phone": "০১৭৯৯-XXXXXX",
+      "email": "salma.primary@school.edu.bd",
+      "isLeadership": false,
+      "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop"
     }
   ],
   "staff": [
@@ -112,8 +307,17 @@
   "customPages": [
     {
       "id": 1,
-      "title": "একাডেমিক সিলেবাস",
-      "content": "আমাদের স্কুলের বার্ষিক একাডেমিক সিলেবাস এখানে দেওয়া হলো..."
+      "title": "একাডেমিক সিলেবাস ও পাঠ পরিকল্পনা",
+      "slug": "academic-syllabus",
+      "template": "text",
+      "content": "আমাদের বিদ্যালয়ের ষষ্ঠ থেকে দশম শ্রেণির বার্ষিক একাডেমিক সিলেবাস ও পাঠ পরিকল্পনা। সকল শিক্ষার্থীকে নির্ধারিত রুটিন ও সিলেবাস অনুসরণ করার জন্য অনুরোধ করা হচ্ছে।",
+      "image": "",
+      "imageSize": "medium",
+      "imagePosition": "top",
+      "pdfUrl": "",
+      "pdfMode": "button",
+      "pdfName": "Syllabus_2026.pdf",
+      "listItems": []
     }
   ],
   "notices": [
@@ -208,40 +412,557 @@
       "id": "academics",
       "title": "একাডেমিক তথ্য",
       "items": [
-        { "id": "syllabus", "name": "সিলেবাস" },
-        { "id": "routine", "name": "ক্লাস রুটিন" },
-        { "id": "results", "name": "পরীক্ষার ফলাফল" }
+        {
+          "id": "syllabus",
+          "name": "সিলেবাস"
+        },
+        {
+          "id": "routine",
+          "name": "ক্লাস রুটিন"
+        },
+        {
+          "id": "results",
+          "name": "পরীক্ষার ফলাফল"
+        }
       ]
     },
     {
       "id": "admission",
       "title": "ভর্তি তথ্য",
       "items": [
-        { "id": "rules", "name": "ভর্তির নিয়মাবলী" },
-        { "id": "fees", "name": "বেতন ও ফি" },
-        { "id": "prospectus", "name": "প্রসপেক্টাস" }
+        {
+          "id": "rules",
+          "name": "ভর্তির নিয়মাবলী"
+        },
+        {
+          "id": "fees",
+          "name": "বেতন ও ফি"
+        },
+        {
+          "id": "prospectus",
+          "name": "প্রসপেক্টাস"
+        }
       ]
     }
   ],
   "importantLinks": [
-    { "id": 1, "title": "শিক্ষা মন্ত্রণালয়", "url": "http://www.moedu.gov.bd/" },
-    { "id": 2, "title": "মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর", "url": "http://www.dshe.gov.bd/" },
-    { "id": 3, "title": "ঢাকা এডুকেশন বোর্ড", "url": "http://www.dhakaeducationboard.gov.bd/" },
-    { "id": 4, "title": "জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড", "url": "http://www.nctb.gov.bd/" }
+    {
+      "id": 1,
+      "title": "শিক্ষা মন্ত্রণালয়",
+      "url": "http://www.moedu.gov.bd/"
+    },
+    {
+      "id": 2,
+      "title": "মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর",
+      "url": "http://www.dshe.gov.bd/"
+    },
+    {
+      "id": 3,
+      "title": "ঢাকা এডুকেশন বোর্ড",
+      "url": "http://www.dhakaeducationboard.gov.bd/"
+    },
+    {
+      "id": 4,
+      "title": "জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড",
+      "url": "http://www.nctb.gov.bd/"
+    }
   ],
   "sidebarImage": "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=400&auto=format&fit=crop",
   "layoutConfig": [
-    { "id": "news_ticker", "name": "স্ক্রলিং জরুরি বার্তা (Marquee)", "active": true },
-    { "id": "banner", "name": "হিরো ব্যানার", "active": true },
-    { "id": "stats_counter", "name": "লাইভ পরিসংখ্যান কাউন্টার", "active": true },
-    { "id": "info_directory", "name": "তথ্য কেন্দ্র (Info Hub)", "active": true },
-    { "id": "notices", "name": "সর্বশেষ নোটিশ", "active": true },
-    { "id": "messages", "name": "বিদ্যালয় বাণী", "active": true },
-    { "id": "gallery_slider", "name": "ফটো গ্যালারি স্লাইডার", "active": true },
-    { "id": "blog_section", "name": "ব্লগ ও অনুচ্ছেদ (Blog)", "active": true },
-    { "id": "teachers", "name": "সম্মানিত শিক্ষকবৃন্দ", "active": true },
-    { "id": "sidebar_links", "name": "সাইডবার: গুরুত্বপূর্ণ লিঙ্ক", "active": true },
-    { "id": "sidebar_helpline", "name": "সাইডবার: জরুরি হটলাইন", "active": true },
-    { "id": "sidebar_image", "name": "সাইডবার: হটলাইন ছবি/ব্যানার", "active": true }
-  ]
+    {
+      "id": "news_ticker",
+      "name": "স্ক্রলিং জরুরি বার্তা (Marquee)",
+      "active": true
+    },
+    {
+      "id": "banner",
+      "name": "হিরো ব্যানার",
+      "active": true
+    },
+    {
+      "id": "stats_counter",
+      "name": "লাইভ পরিসংখ্যান কাউন্টার",
+      "active": true
+    },
+    {
+      "id": "info_directory",
+      "name": "তথ্য কেন্দ্র (Info Hub)",
+      "active": true
+    },
+    {
+      "id": "notices",
+      "name": "সর্বশেষ নোটিশ",
+      "active": true
+    },
+    {
+      "id": "messages",
+      "name": "বিদ্যালয় বাণী",
+      "active": true
+    },
+    {
+      "id": "gallery_slider",
+      "name": "ফটো গ্যালারি স্লাইডার",
+      "active": true
+    },
+    {
+      "id": "blog_section",
+      "name": "ব্লগ ও অনুচ্ছেদ (Blog)",
+      "active": true
+    },
+    {
+      "id": "leadership_dignitaries",
+      "name": "নেতৃত্ব ও দিকনির্দেশনা (সভাপতি, প্রধান শিক্ষক ও বিশিষ্ট ব্যক্তিবর্গ)",
+      "active": true
+    },
+    {
+      "id": "alumni",
+      "name": "কৃতি শিক্ষার্থী ও অ্যালামনাই নেটওয়ার্ক (Alumni & Hall of Fame)",
+      "active": true
+    },
+    {
+      "id": "teachers",
+      "name": "সম্মানিত শিক্ষকবৃন্দ",
+      "active": true
+    },
+    {
+      "id": "sidebar_links",
+      "name": "সাইডবার: গুরুত্বপূর্ণ লিঙ্ক",
+      "active": true
+    },
+    {
+      "id": "sidebar_helpline",
+      "name": "সাইডবার: জরুরি হটলাইন",
+      "active": true
+    },
+    {
+      "id": "sidebar_image",
+      "name": "সাইডবার: হটলাইন ছবি/ব্যানার",
+      "active": true
+    }
+  ],
+  "academicRoutines": [
+    {
+      "id": 1,
+      "title": "২০২৬ শিক্ষাবর্ষের মাধ্যমিক ও উচ্চ-মাধ্যমিক ক্লাসের সার্বিক সময়সূচি",
+      "category": "routine",
+      "classGrade": "৬ষ্ঠ - ১০ম শ্রেণি",
+      "sessionYear": "২০২৬",
+      "publishDate": "২০২৬-০১-১০",
+      "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      "description": "প্রতিটি ক্লাসের বিষয়ভিত্তিক শিক্ষক, ক্লাসরুম ও বিরতির সময়সূচি বিস্তারিত।"
+    },
+    {
+      "id": 2,
+      "title": "অর্ধবার্ষিক মূল্যায়ন ও পরীক্ষার পূর্ণাঙ্গ সময়সূচি ২০২৬",
+      "category": "exam",
+      "classGrade": "সকল শ্রেণি",
+      "sessionYear": "২০২৬",
+      "publishDate": "২০২৬-০২-১৫",
+      "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      "description": "সকাল ১০:০০ টা হতে বেলা ১:০০ টা পর্যন্ত লিখিত পরীক্ষা অনুষ্ঠিত হবে।"
+    },
+    {
+      "id": 3,
+      "title": "জাতীয় শিক্ষাক্রম অনুযায়ী ৬ষ্ঠ ও ৭ম শ্রেণির বিষয়ভিত্তিক সিলেবাস",
+      "category": "syllabus",
+      "classGrade": "৬ষ্ঠ ও ৭ম শ্রেণি",
+      "sessionYear": "২০২৬",
+      "publishDate": "২০২৬-০১-০৫",
+      "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      "description": "নতুন পাঠ্যক্রম অনুযায়ী শিখনফল ও ধারাবাহিক মূল্যায়ন নির্দেশিকা।"
+    },
+    {
+      "id": 4,
+      "title": "বিদ্যালয়ের বাৎসরিক সরকারি ছুটির তালিকা ও একাডেমিক ক্যালেন্ডার ২০২৬",
+      "category": "calendar",
+      "classGrade": "প্রাতিষ্ঠানিক",
+      "sessionYear": "২০২৬",
+      "publishDate": "২০২৬-০১-০১",
+      "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      "description": "২০২৬ সালের সকল জাতীয় দিবস, সরকারি ছুটি ও পরীক্ষার নির্ধারিত তারিখসমূহ।"
+    },
+    {
+      "id": 5,
+      "title": "৯ম-১০ম শ্রেণি বিজ্ঞান ও ব্যবসায় শিক্ষা বিভাগীয় সিলেবাস ও ব্যবহারিক নির্দেশিকা",
+      "category": "syllabus",
+      "classGrade": "৯ম ও ১০ম শ্রেণি",
+      "sessionYear": "২০২৬",
+      "publishDate": "২০২৬-০১-০৮",
+      "fileUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      "description": "বোর্ড পরীক্ষার পূর্ণাঙ্গ সিলেবাস ও ল্যাব ব্যবহারিক পরীক্ষার সময়সূচি।"
+    }
+  ],
+  "feeStructure": [
+    {
+      "id": 1,
+      "grade": "৬ষ্ঠ শ্রেণি",
+      "admissionFee": "১,২০০/-",
+      "sessionFee": "১,০০০/-",
+      "monthlyTuition": "৭০০/-",
+      "examFee": "৪০০/-",
+      "remarks": "সকল শাখা"
+    },
+    {
+      "id": 2,
+      "grade": "৭ম শ্রেণি",
+      "admissionFee": "১,২০০/-",
+      "sessionFee": "১,০০০/-",
+      "monthlyTuition": "৭০০/-",
+      "examFee": "৪০০/-",
+      "remarks": "সকল শাখা"
+    },
+    {
+      "id": 3,
+      "grade": "৮ম শ্রেণি",
+      "admissionFee": "১,৫০০/-",
+      "sessionFee": "১,২০০/-",
+      "monthlyTuition": "৮০০/-",
+      "examFee": "৫০০/-",
+      "remarks": "রেজিস্ট্রেশন ফি আলাদা"
+    },
+    {
+      "id": 4,
+      "grade": "৯ম শ্রেণি (বিজ্ঞান)",
+      "admissionFee": "১,৮০০/-",
+      "sessionFee": "১,৫০০/-",
+      "monthlyTuition": "৯৫০/-",
+      "examFee": "৬০০/-",
+      "remarks": "ল্যাব ফি অন্তর্ভুক্ত"
+    },
+    {
+      "id": 5,
+      "grade": "৯ম শ্রেণি (ব্যবসায় ও মানবিক)",
+      "admissionFee": "১,৬০০/-",
+      "sessionFee": "১,৩০০/-",
+      "monthlyTuition": "৮৫০/-",
+      "examFee": "৫০০/-",
+      "remarks": "সাধারণ শাখা"
+    },
+    {
+      "id": 6,
+      "grade": "১০ম শ্রেণি (এসএসসি পরীক্ষার্থী)",
+      "admissionFee": "২,০০০/-",
+      "sessionFee": "১,৫০০/-",
+      "monthlyTuition": "১,০০০/-",
+      "examFee": "৭০০/-",
+      "remarks": "বিশেষ মডেল টেস্ট অন্তর্ভুক্ত"
+    }
+  ],
+  "paymentMethods": {
+    "bkashNumber": "01700-112233",
+    "bkashType": "মার্চেন্ট (পেমেন্ট)",
+    "nagadNumber": "01800-445566",
+    "nagadType": "মার্চেন্ট (পেমেন্ট)",
+    "rocketNumber": "01900-778899",
+    "bankName": "সোনালী ব্যাংক পিএলসি",
+    "bankAccountName": "আদর্শ উচ্চ বিদ্যালয় সাধারণ তহবিল",
+    "bankAccountNumber": "4401234567890",
+    "bankBranch": "প্রধান শাখা, ঢাকা",
+    "bankRouting": "200260123",
+    "feeNotice": "প্রতি মাসের ১০ তারিখের মধ্যে চলতি মাসের বেতন পরিশোধ করতে হবে। নির্ধারিত তারিখের পর পরিশোধ করলে বিলম্ব ফি ৫০ টাকা প্রযোজ্য হবে।"
+  },
+  "alumni": [
+    {
+      "id": 1,
+      "name": "ড. মোহাম্মদ তানভীর আহমেদ",
+      "batch": "এসএসসি ১৯৯৮",
+      "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop",
+      "currentDesignation": "সহযোগী অধ্যাপক, কম্পিউটার সায়েন্স অ্যান্ড ইঞ্জিনিয়ারিং",
+      "achievements": "আন্তর্জাতিক পিএইচডি গবেষক ও শিক্ষাবিদ",
+      "quote": "এই বিদ্যালয়ের নৈতিক শিক্ষা ও শিক্ষকমণ্ডলীর অনুপ্রেরণাই আমার আজকের জীবনের মূল ভিত্তি।"
+    },
+    {
+      "id": 2,
+      "name": "ব্যারিস্টার ফারহানা সুলতানা",
+      "batch": "এসএসসি ২০০৩",
+      "photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop",
+      "currentDesignation": "আইনজীবী, বাংলাদেশ সুপ্রিম কোর্ট",
+      "achievements": "মানবাধিকার কর্মী ও আইন উপদেষ্টা",
+      "quote": "বিদ্যালয়ের বিতর্ক ক্লাব ও পাঠাগার চর্চা আমাকে আত্মবিশ্বাসী হয়ে ওঠার প্রেরণা জুগিয়েছে।"
+    },
+    {
+      "id": 3,
+      "name": "ইঞ্জিনিয়ার আহসানুল হক",
+      "batch": "এসএসসি ২০১০",
+      "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
+      "currentDesignation": "প্রিন্সিপাল সফটওয়্যার আর্কিটেক্ট, সিলিকন ভ্যালি",
+      "achievements": "গুগল ক্লাউড ও প্রযুক্তি উদ্ভাবক",
+      "quote": "বিদ্যালয়ের বিজ্ঞান মেলা থেকেই আমার কোডিং ও গবেষণায় যাত্রা শুরু হয়েছিল।"
+    }
+  ],
+  "alumniRegistrations": [],
+  "dignitaries": [
+    {
+      "id": 1,
+      "name": "অধ্যাপক মোহাম্মদ আবু তাহের",
+      "designation": "সভাপতি, গভর্নিং বডি",
+      "roleBadge": "গভর্নিং বডি সভাপতি",
+      "badgeColor": "amber",
+      "organization": "আদর্শ উচ্চ বিদ্যালয় ও কলেজ",
+      "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=600&auto=format&fit=crop",
+      "bio": "শিক্ষা ও সামাজিক উন্নয়নে দীর্ঘ ৩০ বছরের অভিজ্ঞতাসম্পন্ন একজন দূরদর্শী সংগঠক। তিনি প্রতিষ্ঠানের অবকাঠামো আধুনিকায়ন ও শিক্ষার মান আন্তর্জাতিক মানে রূপান্তরে নিরলস ভূমিকা পালন করছেন।",
+      "quote": "নৈতিক শিক্ষা এবং আধুনিক প্রযুক্তিজ্ঞানের সমন্বয়ই পারে একটি জাতিকে বিশ্বমঞ্চে সমাসীন করতে।",
+      "degrees": [
+        "এম.এসসি (রসায়ন), ঢাকা বিশ্ববিদ্যালয়",
+        "এম.এড (শিক্ষা প্রশাসন ও ব্যবস্থাপনা)",
+        "পিএইচডি ফেলো (শিক্ষা নেতৃত্ব)"
+      ],
+      "achievements": [
+        "বিদ্যালয়ে শেখ রাসেল ডিজিটাল ল্যাব ও আধুনিক মাল্টিমিডিয়া ক্লাসরুম স্থাপন",
+        "মেধাবী ও অসচ্ছল শিক্ষার্থীদের জন্য ১০০% শিক্ষা বৃত্তি তহবিল গঠন",
+        "বিগত ৩ বছরে এসএসসি পরীক্ষায় শতভাগ উত্তীর্ণ ও জেলায় সেরা প্রতিষ্ঠান স্বীকৃতি"
+      ],
+      "affiliations": [
+        "সদস্য, জেলা শিক্ষা উন্নয়ন ও তদারকি কমিটি",
+        "সাবেক সহ-সভাপতি, রোটারি ক্লাব অফ ঢাকা সেন্ট্রাল",
+        "আজীবন সদস্য, বাংলাদেশ রেড ক্রিসেন্ট সোসাইটি"
+      ],
+      "expertise": [
+        "প্রাতিষ্ঠানিক পলিসি ও উন্নয়ন",
+        "শিক্ষক প্রশিক্ষণ ও গুণগত মান নিয়ন্ত্রণ",
+        "সামাজিক নেতৃত্ব ও কমিউনিটি এনগেজমেন্ট"
+      ],
+      "phone": "+880 1711-000001",
+      "email": "president@school.edu.bd"
+    },
+    {
+      "id": 2,
+      "name": "জনাব মো. আব্দুর রহমান",
+      "designation": "প্রধান শিক্ষক ও সদস্য সচিব",
+      "roleBadge": "প্রধান শিক্ষক",
+      "badgeColor": "blue",
+      "organization": "আদর্শ উচ্চ বিদ্যালয় ও কলেজ",
+      "image": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=600&auto=format&fit=crop",
+      "bio": "জাতীয় পর্যায়ে শ্রেষ্ঠ শিক্ষক পদকপ্রাপ্ত শিক্ষাবিদ। দীর্ঘ ২৫ বছর ধরে পাঠদান, শিক্ষাক্রম উন্নয়ন ও সুশৃঙ্খল প্রশাসনিক ব্যবস্থাপনায় নিজেকে নিয়োজিত রেখেছেন।",
+      "quote": "প্রতিটি শিক্ষার্থীর ভেতর সুপ্ত প্রতিভা বিকশিত করাই আমাদের প্রধানতম ব্রত।",
+      "degrees": [
+        "এম.এ (ইংরেজি সাহিত্য), রাজশাহী বিশ্ববিদ্যালয়",
+        "বি.এড (১ম শ্রেণি), টিচার্স ট্রেনিং কলেজ",
+        "ডিপ্লোমা ইন এডুকেশনাল লিডারশিপ (নায়েম)"
+      ],
+      "achievements": [
+        "জাতীয় শিক্ষা সপ্তাহ ২০১৯-এ জেলা পর্যায়ে শ্রেষ্ঠ প্রধান শিক্ষক নির্বাচিত",
+        "শিক্ষার্থীদের জন্য বিজ্ঞান ক্লাব, বিতর্ক সংসদ ও রোবোটিক্স ল্যাব চালু",
+        "ডিজিটাল হাজিরা ও স্বয়ংক্রিয় এসএমএস নোটিফিকেশন সিস্টেম প্রবর্তন"
+      ],
+      "affiliations": [
+        "সাধারণ সম্পাদক, বাংলাদেশ শিক্ষক সমিতি (উপজেলা শাখা)",
+        "মাস্টার ট্রেইনার, জাতীয় শিক্ষাক্রম রূপরেখা",
+        "সদস্য, জেলা স্কাউটস নির্বাহী কমিটি"
+      ],
+      "expertise": [
+        "আধুনিক শিক্ষণ-শিখন পদ্ধতি",
+        "শৃঙ্খলা ও প্রশাসনিক সুশাসন",
+        "সহশিক্ষা কার্যক্রম উন্নয়ন ও মেন্টরিং"
+      ],
+      "phone": "+880 1712-000002",
+      "email": "headmaster@school.edu.bd"
+    },
+    {
+      "id": 3,
+      "name": "হাজী মুহাম্মদ সামসুল হক",
+      "designation": "প্রতিষ্ঠাতা ও প্রধান পৃষ্ঠপোষক",
+      "roleBadge": "প্রতিষ্ঠাতা পৃষ্ঠপোষক",
+      "badgeColor": "emerald",
+      "organization": "আদর্শ উচ্চ বিদ্যালয় ও কলেজ",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
+      "bio": "বিশিষ্ট দানবীর ও সমাজসেবক। এলাকার সুবিধাবঞ্চিত শিশুদের শিক্ষার আলো পৌঁছে দিতে ১৯৯৮ সালে ব্যক্তিগত জমি দান করে এই বিদ্যাপীঠের ভিত্তি স্থাপন করেন।",
+      "quote": "মানুষ গড়ার কারখানায় এক টাকা বিনিয়োগ শত শত আলোকবর্তিকা তৈরি করে।",
+      "degrees": [
+        "বি.এ (সম্মান), অর্থনীতি",
+        "সামাজিক অবদানের জন্য বিশেষ রাষ্ট্রীয় সম্মাননা"
+      ],
+      "achievements": [
+        "বিদ্যালয় ভবন নির্মাণের জন্য ২ একর নিষ্কর জমি ও প্রারম্ভিক তহবিল অনুদান",
+        "বঙ্গবন্ধু বিজ্ঞান ও তথ্যপ্রযুক্তি ভবনের একক অর্থায়ন",
+        "প্রতি বছর ৫০ জন শিক্ষার্থীর সম্পূর্ণ শিক্ষা ব্যয় ও বই অনুদান"
+      ],
+      "affiliations": [
+        "প্রধান উপদেষ্টা, আদর্শ সমাজকল্যাণ ট্রাস্ট",
+        "সাবেক পরিচালক, এফবিসিসিআই ও স্থানীয় চেম্বার",
+        "সভাপতি, কেন্দ্রীয় জামে মসজিদ কমপ্লেক্স"
+      ],
+      "expertise": [
+        "সমাজসেবা ও মানবকল্যাণ",
+        "শিক্ষাপ্রতিষ্ঠান প্রতিষ্ঠা ও পৃষ্ঠপোষকতা",
+        "কমিউনিটি মোবিলাইজেশন"
+      ],
+      "phone": "+880 1713-000003",
+      "email": "patron@school.edu.bd"
+    },
+    {
+      "id": 4,
+      "name": "বেগম সেলিনা আখতার",
+      "designation": "সহ-সভাপতি ও শিক্ষানুরাগী সদস্য",
+      "roleBadge": "শিক্ষানুরাগী সদস্য",
+      "badgeColor": "purple",
+      "organization": "আদর্শ উচ্চ বিদ্যালয় ও কলেজ",
+      "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop",
+      "bio": "নারী শিক্ষা ও সহশিক্ষা কার্যক্রম প্রসারে নিবেদিতপ্রাণ সমাজকর্মী। তিনি বিশেষ করে ছাত্রী হোস্টেল পরিচালনা এবং সাংস্কৃতিক বিকাশ কমিটির নেতৃত্ব দিচ্ছেন।",
+      "quote": "একটি শিক্ষিত মা জাতিকে উপহার দিতে পারে আলোকিত ভবিষ্যৎ।",
+      "degrees": [
+        "এম.এস.এস (সমাজবিজ্ঞান), চট্টগ্রাম বিশ্ববিদ্যালয়",
+        "সার্টিফিকেট ইন চাইল্ড ডেভেলপমেন্ট অ্যান্ড কাউন্সিলিং"
+      ],
+      "achievements": [
+        "ছাত্রীদের জন্য পৃথক কমনরুম, প্রাথমিক স্বাস্থ্য কর্নার ও স্যানিটেশন উন্নয়ন",
+        "বার্ষিক বিতর্ক প্রতিযোগিতা ও সাহিত্য সাংস্কৃতিক সপ্তাহের রূপকার",
+        "নারী উদ্যোক্তা ও অভিভাবক সচেতনতা ফোরাম গঠন"
+      ],
+      "affiliations": [
+        "সহ-সভাপতি, মহিলা সমিতি (জেলা শাখা)",
+        "সদস্য, উপজেলা নারী ও শিশু উন্নয়ন বিষয়ক কমিটি"
+      ],
+      "expertise": [
+        "নারী শিক্ষা উন্নয়ন ও কাউন্সিলিং",
+        "সাংস্কৃতিক ও বিতর্ক নেতৃত্ব",
+        "সমাজসেবামূলক প্রকল্প প্রণয়ন"
+      ],
+      "phone": "+880 1714-000004",
+      "email": "selina.member@school.edu.bd"
+    }
+  ],
+  "quickAccess": [
+    {
+      "id": "admission",
+      "title": "ভর্তি তথ্য ও ফরম",
+      "tag": "ভর্তি চলছে",
+      "description": "আবেদন প্রক্রিয়া, আসন সংখ্যা, যোগ্যতা ও ফি সংক্রান্ত বিস্তারিত",
+      "iconName": "GraduationCap",
+      "href": "/admission-info",
+      "color": "from-blue-600 to-indigo-600",
+      "accentBorder": "border-blue-200 hover:border-blue-500",
+      "topBar": "bg-gradient-to-r from-blue-600 to-indigo-600",
+      "textColor": "text-blue-700",
+      "tagBg": "bg-blue-50 text-blue-800 border-blue-200"
+    },
+    {
+      "id": "notices",
+      "title": "নোটিশ বোর্ড",
+      "tag": "জরুরি নোটিশ",
+      "description": "বিদ্যালয়ের সকল দাপ্তরিক আদেশ, ভর্তি বিজ্ঞপ্তি ও পরীক্ষার নোটিশ",
+      "iconName": "Calendar",
+      "href": "/notices",
+      "color": "from-emerald-600 to-teal-600",
+      "accentBorder": "border-emerald-200 hover:border-emerald-500",
+      "topBar": "bg-gradient-to-r from-emerald-600 to-teal-600",
+      "textColor": "text-emerald-700",
+      "tagBg": "bg-emerald-50 text-emerald-800 border-emerald-200"
+    },
+    {
+      "id": "fees",
+      "title": "ফি ও পেমেন্ট",
+      "tag": "ডিজিটাল পে",
+      "description": "শ্রেণিভিত্তিক ফি তালিকা এবং বিকাশ, নগদ ও ব্যাংকে ফি পরিশোধ গাইড",
+      "iconName": "CreditCard",
+      "href": "/fees-payment",
+      "color": "from-amber-600 to-orange-600",
+      "accentBorder": "border-amber-200 hover:border-amber-500",
+      "topBar": "bg-gradient-to-r from-amber-600 to-orange-600",
+      "textColor": "text-amber-700",
+      "tagBg": "bg-amber-50 text-amber-800 border-amber-200"
+    },
+    {
+      "id": "alumni",
+      "title": "কৃতি শিক্ষার্থী",
+      "tag": "হল অব ফেম",
+      "description": "প্রাক্তন শিক্ষার্থীদের গৌরবোজ্জ্বল সাফল্য ও সাবেক শিক্ষার্থী নেটওয়ার্ক",
+      "iconName": "Award",
+      "href": "/alumni",
+      "color": "from-indigo-600 to-purple-600",
+      "accentBorder": "border-indigo-200 hover:border-indigo-500",
+      "topBar": "bg-gradient-to-r from-indigo-600 to-purple-600",
+      "textColor": "text-indigo-700",
+      "tagBg": "bg-indigo-50 text-indigo-800 border-indigo-200"
+    }
+  ],
+  "hotlines": [
+    {
+      "id": 1,
+      "number": "999",
+      "name": "জাতীয় জরুরি সেবা (পুলিশ, অ্যাম্বুলেন্স, ফায়ার)"
+    },
+    {
+      "id": 2,
+      "number": "333",
+      "name": "সরকারি সেবা ও তথ্য বাতায়ন"
+    },
+    {
+      "id": 3,
+      "number": "109",
+      "name": "নারী ও শিশু নির্যাতন প্রতিরোধ সেল"
+    },
+    {
+      "id": 4,
+      "number": "106",
+      "name": "দুর্নীতি দমন কমিশন (দুদক)"
+    }
+  ],
+  "footerData": {
+    "aboutText": "আধুনিক শিক্ষা, প্রযুক্তি এবং নৈতিক মূল্যবোধের সমন্বয়ে আদর্শ ভবিষ্যৎ নাগরিক গড়ার প্রত্যয়ে আমাদের অগ্রযাত্রা অব্যাহত।",
+    "recognitionBadge": "মডেল শিক্ষাপ্রতিষ্ঠান স্বীকৃতিপ্রাপ্ত",
+    "quickLinksTitle": "দ্রুত লিঙ্ক সমূহ",
+    "quickLinks": [
+      {
+        "id": "1",
+        "title": "বিদ্যালয় সম্পর্কিত তথ্য",
+        "url": "/about"
+      },
+      {
+        "id": "2",
+        "title": "দাপ্তরিক নোটিশ বোর্ড",
+        "url": "/notices"
+      },
+      {
+        "id": "3",
+        "title": "সম্মানিত শিক্ষকবৃন্দ",
+        "url": "/teachers"
+      },
+      {
+        "id": "4",
+        "title": "ভর্তি প্রক্রিয়া ও নিয়মাবলী",
+        "url": "/admission-info"
+      },
+      {
+        "id": "5",
+        "title": "ম্যানেজিং কমিটি",
+        "url": "/committee"
+      }
+    ],
+    "academicLinksTitle": "একাডেমিক ও শিক্ষার্থী সেবা",
+    "academicLinks": [
+      {
+        "id": "1",
+        "title": "ক্লাস রুটিন ও ছুটির ক্যালেন্ডার",
+        "url": "/academics"
+      },
+      {
+        "id": "2",
+        "title": "পরীক্ষার সূচি ও বিষয়ভিত্তিক সিলেবাস",
+        "url": "/academics"
+      },
+      {
+        "id": "3",
+        "title": "টিউশন ফি ও পেমেন্ট নির্দেশিকা",
+        "url": "/fees-payment"
+      },
+      {
+        "id": "4",
+        "title": "কৃতি শিক্ষার্থী ও অ্যালামনাই কর্নার",
+        "url": "/alumni"
+      },
+      {
+        "id": "5",
+        "title": "শিক্ষক ও শিক্ষার্থীদের প্রবন্ধ",
+        "url": "/blog"
+      }
+    ],
+    "contactTitle": "অফিস ও যোগাযোগ",
+    "officeHours": "রবিবার - বৃহস্পতিবার: সকাল ৯:০০ - বিকাল ৪:০০",
+    "customAddress": "",
+    "customPhone": "",
+    "customEmail": "",
+    "copyrightText": "",
+    "backToTopText": "উপরে যান"
+  }
 }

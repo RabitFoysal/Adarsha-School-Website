@@ -1,35 +1,31 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { getSchoolData, saveSchoolData } from "@/lib/dataProvider";
 
-const dataFilePath = path.join(process.cwd(), "src/data/demoData.json");
+export const dynamic = "force-dynamic";
 
-const readData = () => {
-  return JSON.parse(fs.readFileSync(dataFilePath, "utf8"));
-};
-
-const writeData = (data: any) => {
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-};
-
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { action, path: imgPath } = await request.json();
-    const data = readData();
+    const { active } = await req.json();
+    const data = await getSchoolData(true);
 
-    if (!data.gallery) data.gallery = [];
-
-    if (action === "add") {
-      if (!data.gallery.includes(imgPath)) {
-        data.gallery.push(imgPath);
-      }
-    } else if (action === "remove") {
-      data.gallery = data.gallery.filter((p: string) => p !== imgPath);
+    if (!Array.isArray(data.layoutConfig)) {
+      data.layoutConfig = [];
     }
 
-    writeData(data);
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    return NextResponse.json({ success: false }, { status: 500 });
+    const itemIndex = data.layoutConfig.findIndex((c: any) => c.id === "gallery_slider");
+    if (itemIndex > -1) {
+      data.layoutConfig[itemIndex].active = Boolean(active);
+    } else {
+      data.layoutConfig.push({
+        id: "gallery_slider",
+        name: "ক্যাম্পাস চিত্রশালা স্লাইডার",
+        active: Boolean(active),
+      });
+    }
+
+    const saveRes = await saveSchoolData(data);
+    return NextResponse.json({ message: "গ্যালারি স্লাইডার সেটিংস সংরক্ষিত হয়েছে", ...saveRes });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, message: error?.message || "ব্যর্থ হয়েছে" }, { status: 500 });
   }
 }

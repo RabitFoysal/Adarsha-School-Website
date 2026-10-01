@@ -1,8 +1,34 @@
-import demoData from "@/data/demoData.json";
-import { Briefcase, School, CheckCircle2 } from "lucide-react";
+import { getSchoolData } from "@/lib/dataProvider";
+import { Briefcase, School, CheckCircle2, Phone, Mail, GraduationCap } from "lucide-react";
+import SafeImage from "@/components/SafeImage";
+import type { Metadata } from "next";
 
-export default function StaffPage() {
-  const { staff, schoolInfo } = demoData;
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getSchoolData();
+  const schoolName = data?.schoolInfo?.name || "বিদ্যালয়";
+
+  return {
+    title: `কর্মকর্তা ও কর্মচারীবৃন্দ | ${schoolName}`,
+    description: `${schoolName}-এর অফিস সহকারী, লাইব্রেরিয়ান ও প্রশাসনিক কর্মচারীদের বিবরণ।`,
+    openGraph: {
+      title: `কর্মচারীবৃন্দ | ${schoolName}`,
+      description: `${schoolName} অফিস ও সহায়ক স্টাফবৃন্দ।`,
+    }
+  };
+}
+
+export default async function StaffPage() {
+  const data = await getSchoolData();
+  const rawStaff = data?.staff || [];
+  const schoolInfo = data?.schoolInfo || {};
+
+  const sortedStaff = [...rawStaff].sort((a: any, b: any) => {
+    const orderA = a.order !== undefined ? Number(a.order) : 999;
+    const orderB = b.order !== undefined ? Number(b.order) : 999;
+    return orderA - orderB;
+  });
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 min-h-screen">
@@ -21,7 +47,7 @@ export default function StaffPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {staff && staff.map((member: any) => (
+        {sortedStaff && sortedStaff.map((member: any) => (
           <div 
             key={member.id} 
             className="bg-white rounded-3xl border border-slate-200 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col group relative"
@@ -33,8 +59,9 @@ export default function StaffPage() {
               <div>
                 <div className="relative mx-auto mb-4">
                   <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden ring-4 ring-slate-50 border-2 border-slate-200 mx-auto bg-slate-100 shadow-sm">
-                    <img 
+                    <SafeImage 
                       src={member.image} 
+                      fallbackSrc="https://placehold.co/400x400/e2e8f0/1e293b?text=Staff"
                       alt={member.name} 
                       className="w-full h-full object-cover group-hover:scale-108 transition duration-500" 
                     />
@@ -48,18 +75,35 @@ export default function StaffPage() {
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
                 </div>
 
-                <span className="inline-block text-xs font-bold px-3 py-1 rounded-full border bg-teal-50 text-teal-800 border-teal-200 mb-3">
+                <span className="inline-block text-xs font-bold px-3 py-1 rounded-full border bg-teal-50 text-teal-800 border-teal-200 mb-2">
                   {member.designation}
                 </span>
 
-                <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                  বিদ্যালয়ের প্রশাসনিক ও সহায়তামূলক দায়িত্বে বিশ্বস্ততার সাথে নিয়োজিত।
+                {member.qualification && (
+                  <p className="text-[11px] text-slate-600 font-semibold mb-1 flex items-center justify-center gap-1">
+                    <GraduationCap className="w-3.5 h-3.5 text-teal-600" />
+                    <span>{member.qualification}</span>
+                  </p>
+                )}
+
+                <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mt-1">
+                  {member.bio || "বিদ্যালয়ের প্রশাসনিক ও সহায়তামূলক দায়িত্বে বিশ্বস্ততার সাথে নিয়োজিত।"}
                 </p>
+
+                {member.phone && (
+                  <a 
+                    href={`tel:${member.phone}`}
+                    className="inline-flex items-center gap-1.5 text-xs text-teal-700 font-bold bg-teal-50 hover:bg-teal-100 px-3 py-1 rounded-lg mt-3 transition border border-teal-100"
+                  >
+                    <Phone className="w-3 h-3 text-teal-600" />
+                    <span>{member.phone}</span>
+                  </a>
+                )}
               </div>
 
               <div className="border-t border-slate-100 pt-3.5 mt-4 w-full flex items-center justify-center gap-1.5 text-slate-400 text-xs font-medium">
                 <School className="w-3.5 h-3.5 text-slate-500" />
-                <span>দাপ্তরিক বিভাগ</span>
+                <span>{member.department || "দাপ্তরিক বিভাগ"}</span>
               </div>
             </div>
           </div>

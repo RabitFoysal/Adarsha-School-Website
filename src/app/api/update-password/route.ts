@@ -1,27 +1,20 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import adminData from "@/data/adminData.json";
+import { getAdminData, saveAdminData } from "@/lib/dataProvider";
 
-export async function POST(request: Request) {
+export const dynamic = "force-dynamic";
+
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
-    const { oldPassword, newPassword } = body;
+    const { oldPassword, newPassword } = await req.json();
+    const admin = await getAdminData();
 
-    // পুরোনো পাসওয়ার্ড চেক করা
-    if (oldPassword !== adminData.password) {
+    if (admin.password !== oldPassword) {
       return NextResponse.json({ success: false, message: "পুরোনো পাসওয়ার্ড সঠিক নয়!" }, { status: 400 });
     }
 
-    // নতুন পাসওয়ার্ড আপডেট করা
-    const newData = { ...adminData, password: newPassword };
-    const filePath = path.join(process.cwd(), "src/data/adminData.json");
-    
-    // ফাইলে নতুন ডেটা সেভ করা
-    fs.writeFileSync(filePath, JSON.stringify(newData, null, 2));
-
-    return NextResponse.json({ success: true, message: "পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে!" });
-  } catch (error) {
-    return NextResponse.json({ success: false, message: "সার্ভারে সমস্যা হয়েছে!" }, { status: 500 });
+    await saveAdminData({ username: admin.username, password: newPassword });
+    return NextResponse.json({ success: true, message: "পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!" });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, message: "পাসওয়ার্ড পরিবর্তন ব্যর্থ হয়েছে!" }, { status: 500 });
   }
 }
